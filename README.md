@@ -1,2 +1,2 @@
 # occam
-Blockers Project - Blake Woods Solona Wallet
+Blockers Project - Blake Wood's Solona Wallet
