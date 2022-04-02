@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+
 const { Keypair } = require('@solana/web3.js');
 const { exec } = require('child_process');
 
@@ -17,29 +18,8 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', async (req, res) => {
-    const db = getFirestore()
-    try {
-        
-        const querySnapshot = await db.collection('wallets').get();
-        querySnapshot.forEach((doc) => {
-            console.log(doc.id, ' => ', doc.data())
-        });
-    } catch(err) {
-        console.log('ERROR: ', err)
-    }
-    // const seed = bip39
-    //     .mnemonicToSeedSync(
-    //         'into smooth raw render lucky come fury kingdom purchase tent lounge lottery'
-    //     )
-    //     .slice(0, 32)
-    // console.log('')
-
-    res.send({});
-})
-
 app.get('/createWallet', (req, res) => {
-    console.log('EXECUTE');
+    const { userId } = req.body
     exec('sh ./scripts/wallet.sh', (error, stdout, stderr) => {
         const split = stdout.split('\n');
         const pubKey = split[2].split(':')[1].trim();
