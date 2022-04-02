@@ -6,8 +6,7 @@ const { Keypair } = require('@solana/web3.js');
 const { exec } = require('child_process');
 
 const { initializeApp, cert } = require("firebase-admin/app");
-
-const { getFirestore, Timestamp, FieldValue } = require('firebase-admin/firestore');
+const { getFirestore } = require('firebase-admin/firestore');
 var serviceAccount = require("./service_account.json");
 
 var app = express();
