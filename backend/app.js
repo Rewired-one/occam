@@ -40,14 +40,10 @@ app.get('/', async (req, res) => {
 
 app.get('/createWallet', (req, res) => {
     console.log('EXECUTE');
-    exec('solana-keygen new --no-outfile --no-bip39-passphrase', (error, stdout, stderr) => {
-        var split = stdout.split('\n');
+    exec('sh ./scripts/wallet.sh', (error, stdout, stderr) => {
+        const split = stdout.split('\n');
         const pubKey = split[2].split(':')[1].trim();
         const mnemonicPhrase = split[5];
-        console.log("PUB KEY: ", pubKey);
-        console.log('PHRASE: ', mnemonicPhrase);
-        // console.log('stdout: ', stdout)
-        // console.log('stderr: ', stderr)
         if(error !== null) {
             console.log(`exec error: ${error}`);
         }
