@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mobile/features/authentication/domain/models/user.dart';
 
 part 'auth_state.dart';
 
