@@ -7,4 +7,3 @@ abstract class IAddressBook {
   Future<void> shareAddress();
   Future<void> requestPaymentFromAddress();
 }
-
