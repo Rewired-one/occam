@@ -5,5 +5,4 @@ abstract class IAddressBook {
   Future<void> addAddress();
   Future<void> removeAddress();
   Future<void> shareAddress();
-  Future<void> requestPaymentFromAddress();
 }

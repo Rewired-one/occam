@@ -13,7 +13,7 @@ class AuthLoaded extends AuthState {
     required this.user,
   });
 
-  final User user;
+  final AppUser user;
 
   @override
   bool operator ==(Object other) {

@@ -14,4 +14,6 @@ abstract class Wallet {
   Future<void> destroy();
   /// Signs a transactions
   Future<void> sign();
+  /// Requests a payment from a user
+  Future<void> requestPayment();
 }
