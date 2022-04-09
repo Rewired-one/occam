@@ -10,7 +10,7 @@ abstract class IUser {
   late final List<String> wallets;
   /// List of Doc IDs for each address entry in user's Address Book DB
   late final List<String> addressBook;
-  late final Settings appSettings;
+  late final ISettings appSettings;
 
   /// Update the user's displayName
   Future<void> updateDisplayName(String newName);
@@ -35,7 +35,7 @@ class AppUser implements IUser {
   List<String> addressBook;
 
   @override
-  Settings appSettings;
+  ISettings appSettings;
 
   @override
   String displayName;
