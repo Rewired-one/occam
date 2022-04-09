@@ -13,6 +13,12 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signIn(String email, String password) async {
     emit(AuthLoading());
     final response = await authRepository.signInWithEmailAndPassword(email: email, password: password);
-    response.fold((l) => emit(AuthError(l)), (r) => emit(AuthLoaded()));
+    response.fold((l) {
+      print(l.message);
+      return emit(AuthError(l));
+    }, (r) {
+      print('SUCCESS!');
+      return emit(AuthLoaded());
+    });
   }
 }

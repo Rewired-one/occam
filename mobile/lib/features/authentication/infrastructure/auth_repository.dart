@@ -6,8 +6,7 @@ import 'package:mobile/features/authentication/domain/auth/i_auth_facade.dart';
 
 class AuthRepository implements IAuthFacade {
   @override
-  Future<Either<AuthFailure, Unit>> changeEmailAddress(
-      {required String newEmail, required String newPassword}) {
+  Future<Either<AuthFailure, Unit>> changeEmailAddress({required String newEmail, required String newPassword}) {
     // TODO: implement changeEmailAddress
     throw UnimplementedError();
   }
@@ -16,11 +15,11 @@ class AuthRepository implements IAuthFacade {
   Future<Either<AuthFailure, Unit>> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      await FirebaseAuth.instance
-          .signInWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       return right(unit);
     } on FirebaseAuthException catch (error) {
-      switch (error.message) {
+      print('ERROR CODE: ${error.code}');
+      switch (error.code) {
         case 'invalid-email':
           {
             return left(InvalidEmail('Invalid Email Used!'));
@@ -39,7 +38,7 @@ class AuthRepository implements IAuthFacade {
             return left(InvalidPassword('Invalid password used!'));
           }
       }
-      return left(GenericAuthError(error.message!));
+      return left(GenericAuthError(error.code));
     }
   }
 
@@ -47,8 +46,7 @@ class AuthRepository implements IAuthFacade {
   Future<Either<AuthFailure, Unit>> signUpWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       return right(unit);
     } on FirebaseAuthException catch (error) {
       return left(GenericAuthError(error.message!));

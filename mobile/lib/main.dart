@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/firebase_options.dart';
+
+import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:mobile/features/authentication/infrastructure/auth_repository.dart';
 import 'package:mobile/features/authentication/presentation/check_authentication.dart';
 
 void main() async {
@@ -18,11 +21,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Occam Wallet App',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
-      home: const CheckAuthentication(),
+    return MultiBlocProvider(
+      providers: [BlocProvider(create: (_) => AuthCubit(AuthRepository()))],
+      child: MaterialApp(
+        title: 'Occam Wallet App',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData.dark(),
+        home: const CheckAuthentication(),
+      ),
     );
   }
 }
