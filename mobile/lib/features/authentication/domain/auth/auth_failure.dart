@@ -23,14 +23,18 @@ class InvalidPassword extends AuthFailure {
   InvalidPassword(String message) : super(message);
 }
 
-class EmailAlreadyInUse extends AuthFailure {
-  EmailAlreadyInUse(String message) : super(message);
-}
-
 class InvalidEmail extends AuthFailure {
   InvalidEmail(String message) : super(message);
 }
 
-class ServerError extends AuthFailure {
-  ServerError(String message) : super(message);
+class UserNotFound extends AuthFailure {
+  UserNotFound(String message) : super(message);
+}
+
+class UserDisabled extends AuthFailure {
+  UserDisabled(String message) : super(message);
+}
+
+class GenericAuthError extends AuthFailure {
+  GenericAuthError(String message) : super(message);
 }
