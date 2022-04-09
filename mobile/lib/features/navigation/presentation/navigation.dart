@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -13,7 +14,18 @@ class _NavigationScreenState extends State<NavigationScreen> {
     return Scaffold(
       body: IndexedStack(
         index: 0,
-        children: [Container()],
+        children: [
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: ElevatedButton(
+                child: const Text('Log Out'),
+                onPressed: () => FirebaseAuth.instance.signOut(),
+              ),
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
