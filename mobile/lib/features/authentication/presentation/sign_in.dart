@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
-import 'package:mobile/features/navigation/presentation/navigation.dart';
+
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/password_input.dart';
+import 'package:mobile/features/navigation/presentation/navigation.dart';
+import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
