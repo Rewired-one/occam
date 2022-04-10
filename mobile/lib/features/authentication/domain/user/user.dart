@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 abstract class IUser {
   late final String id;
   late final String email;
@@ -16,7 +18,7 @@ abstract class IUser {
 
   /// Doc ID pointing to the User's provided settings.
   // TODO: Create App Settings doc when creating user
-  late final String appSettings;
+  late final String appSettingsId;
 
   /// Update the user's displayName
   Future<void> updateDisplayName(String newName);
@@ -32,20 +34,47 @@ abstract class IUser {
   Future<void> destroy();
 }
 
-class AppUser extends IUser {
+class AppUser implements IUser {
   AppUser({
-    required String id,
-    required String email,
-    required String displayName,
-    required String appSettings,
-    String? profilePic,
-    List<String> wallets = const [],
-    List<String> addressBook = const [],
+    this.addressBookId,
+    required this.appSettingsId,
+    required this.displayName,
+    required this.email,
+    required this.id,
+    this.profilePic,
+    this.walletId,
   });
+
+  @override
+  String? addressBookId;
+
+  @override
+  String appSettingsId;
+
+  @override
+  String displayName;
+
+  @override
+  String email;
+
+  @override
+  String id;
+
+  @override
+  String? profilePic;
+
+  @override
+  String? walletId;
 
   @override
   Future<void> destroy() {
     // TODO: implement destroy
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updateAddressBookid() {
+    // TODO: implement updateAddressBookid
     throw UnimplementedError();
   }
 
@@ -62,14 +91,42 @@ class AppUser extends IUser {
   }
 
   @override
-  Future<void> updateAddressBookid() {
-    // TODO: implement updateAddressBookid
-    throw UnimplementedError();
-  }
-
-  @override
   Future<void> updateWalletId() {
     // TODO: implement updateWalletId
     throw UnimplementedError();
   }
+
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'addressBookId': addressBookId});
+    result.addAll({'appSettingsId': appSettingsId});
+    result.addAll({'displayName': displayName});
+    result.addAll({'email': email});
+    result.addAll({'id': id});
+    if (profilePic != null) {
+      result.addAll({'profilePic': profilePic});
+    }
+    if (walletId != null) {
+      result.addAll({'walletId': walletId});
+    }
+
+    return result;
+  }
+
+  factory AppUser.fromMap(Map<String, dynamic> map) {
+    return AppUser(
+      addressBookId: map['addressBookId'],
+      appSettingsId: map['appSettingsId'] ?? '',
+      displayName: map['displayName'] ?? '',
+      email: map['email'] ?? '',
+      id: map['id'] ?? '',
+      profilePic: map['profilePic'],
+      walletId: map['walletId'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory AppUser.fromJson(String source) => AppUser.fromMap(json.decode(source));
 }
