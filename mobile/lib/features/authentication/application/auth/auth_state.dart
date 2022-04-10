@@ -11,21 +11,21 @@ class AuthLoading extends AuthState {
   AuthLoading();
 }
 
-class AuthLoaded extends AuthState {
-  AuthLoaded();
+class AuthSuccess extends AuthState {
+  AuthSuccess();
 }
 
 class AuthError extends AuthState {
-  AuthError(this.authFailure);
-  final AuthFailure authFailure;
+  AuthError(this.message);
+  final String message;
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is AuthError && other.authFailure == authFailure;
+    return other is AuthError && other.message == message;
   }
 
   @override
-  int get hashCode => authFailure.hashCode;
+  int get hashCode => message.hashCode;
 }

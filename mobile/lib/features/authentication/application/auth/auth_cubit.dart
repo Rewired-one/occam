@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:mobile/features/authentication/domain/auth/auth_failure.dart';
 import 'package:mobile/features/authentication/infrastructure/auth_repository.dart';
 
 part 'auth_state.dart';
@@ -14,11 +13,9 @@ class AuthCubit extends Cubit<AuthState> {
     emit(AuthLoading());
     final response = await authRepository.signInWithEmailAndPassword(email: email, password: password);
     response.fold((l) {
-      print(l.message);
-      return emit(AuthError(l));
+      return emit(AuthError(l.message));
     }, (r) {
-      print('SUCCESS!');
-      return emit(AuthLoaded());
+      return emit(AuthSuccess());
     });
   }
 }

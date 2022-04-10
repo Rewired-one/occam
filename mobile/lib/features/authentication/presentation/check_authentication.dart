@@ -25,6 +25,6 @@ class _CheckAuthenticationState extends State<CheckAuthentication> {
     if (user == null) {
       return const SignInScreen();
     }
-    return NavigationScreen();
+    return const NavigationScreen();
   }
 }

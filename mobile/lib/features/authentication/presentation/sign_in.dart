@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:mobile/features/navigation/presentation/navigation.dart';
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/password_input.dart';
 
@@ -23,11 +24,36 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, state) {},
+        listener: (context, AuthState state) {
+          if (state is AuthError) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  'Error! ${state.message}',
+                ),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+          if (state is AuthSuccess) {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const NavigationScreen(),
+              ),
+            );
+          }
+        },
         builder: (context, AuthState state) {
           if (state is AuthLoading) {
             return const Center(
               child: CircularProgressIndicator(),
+            );
+          }
+          if (state is AuthSuccess) {
+            return const SizedBox(
+              width: double.infinity,
+              height: double.infinity,
             );
           }
           return Container(
@@ -71,7 +97,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     onPressed: () => signIn(),
                     child: const Text('Enter'),
                   ),
-                )
+                ),
+                const SizedBox(height: 20),
+                if (state is AuthError) Text(state.message),
               ],
             ),
           );

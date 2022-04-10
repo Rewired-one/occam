@@ -18,7 +18,6 @@ class AuthRepository implements IAuthFacade {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       return right(unit);
     } on FirebaseAuthException catch (error) {
-      print('ERROR CODE: ${error.code}');
       switch (error.code) {
         case 'invalid-email':
           {
