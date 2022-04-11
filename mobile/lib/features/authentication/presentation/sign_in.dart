@@ -19,6 +19,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   void signIn() {
     context.read<AuthCubit>().signIn(email, password);
+
+    final state = context.read<AuthCubit>().state;
   }
 
   @override
@@ -26,17 +28,17 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       body: BlocConsumer<AuthCubit, AuthState>(
         listener: (context, AuthState state) {
-          if (state is AuthError) {
+          if (state.status == AuthStatus.failure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
-                  'Error! ${state.message}',
+                  'Error! ${state.authFailure?.message}',
                 ),
                 duration: const Duration(seconds: 2),
               ),
             );
           }
-          if (state is AuthSuccess) {
+          if (state.status == AuthStatus.success) {
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
@@ -46,12 +48,12 @@ class _SignInScreenState extends State<SignInScreen> {
           }
         },
         builder: (context, AuthState state) {
-          if (state is AuthLoading) {
+          if (state.status == AuthStatus.loading) {
             return const Center(
               child: CircularProgressIndicator(),
             );
           }
-          if (state is AuthSuccess) {
+          if (state.status == AuthStatus.success) {
             return const SizedBox(
               width: double.infinity,
               height: double.infinity,
@@ -100,7 +102,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                if (state is AuthError) Text(state.message),
+                if (state.status == AuthStatus.failure) Text(state.authFailure!.message),
               ],
             ),
           );

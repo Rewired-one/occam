@@ -124,7 +124,7 @@ class AppUser implements IUser {
   factory AppUser.fromSnapshot(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return AppUser(
-        appSettingsId: data['appSettings'],
+        appSettingsId: data['appSettingsId'],
         displayName: data['displayName'],
         email: data['email'],
         id: doc.id,
@@ -145,10 +145,10 @@ class AppUser implements IUser {
   AppUser.fromJson(Map<String, dynamic> json)
       : this(
           addressBookId: json['addressBookId'],
-          appSettingsId: json['appSetingsId'],
+          appSettingsId: json['appSettingsId'],
           displayName: json['displayName'],
           email: json['email'],
-          id: json['id'],
+          id: json['email'],
           profilePic: json['profilePic'],
           walletId: json['walletId'],
         );

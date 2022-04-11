@@ -19,7 +19,6 @@ class AuthRepository implements IAuthFacade {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
       final user = await fetchUserFromFirebase(email);
-
       return right(user);
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
@@ -59,7 +58,7 @@ class AuthRepository implements IAuthFacade {
   @override
   Future<AppUser> fetchUserFromFirebase(String email) async {
     final userRef = FirebaseFirestore.instance.collection('users').doc(email).withConverter<AppUser>(
-        fromFirestore: ((snapshot, options) => AppUser.fromJson(snapshot.data()!)),
+        fromFirestore: ((snapshot, options) => AppUser.fromSnapshot(snapshot)),
         toFirestore: (user, _) => {
               'addressBookId': user.addressBookId,
               'appSettingsId': user.appSettingsId,
