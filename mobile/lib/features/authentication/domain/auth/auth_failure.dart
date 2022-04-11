@@ -1,6 +1,7 @@
 /// Connotates an Authorization Failure from Server response
 abstract class AuthFailure {
   AuthFailure(this.message);
+
   /// Error Message
   late final String message;
 
@@ -10,9 +11,8 @@ abstract class AuthFailure {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
-    return other is AuthFailure &&
-      other.message == message;
+
+    return other is AuthFailure && other.message == message;
   }
 
   @override
@@ -37,4 +37,8 @@ class UserDisabled extends AuthFailure {
 
 class GenericAuthError extends AuthFailure {
   GenericAuthError(String message) : super(message);
+}
+
+class FailedToCreateUser extends AuthFailure {
+  FailedToCreateUser(String message) : super(message);
 }

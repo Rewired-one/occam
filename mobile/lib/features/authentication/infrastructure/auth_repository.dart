@@ -1,8 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:mobile/features/authentication/domain/auth/auth_failure.dart';
 import 'package:mobile/features/authentication/domain/auth/i_auth_facade.dart';
+import 'package:mobile/features/authentication/domain/user/user.dart';
 
 class AuthRepository implements IAuthFacade {
   @override
@@ -12,11 +14,13 @@ class AuthRepository implements IAuthFacade {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> signInWithEmailAndPassword(
+  Future<Either<AuthFailure, AppUser>> signInWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
-      return right(unit);
+      final user = await fetchUserFromFirebase(email);
+
+      return right(user);
     } on FirebaseAuthException catch (error) {
       switch (error.code) {
         case 'invalid-email':
@@ -50,5 +54,32 @@ class AuthRepository implements IAuthFacade {
     } on FirebaseAuthException catch (error) {
       return left(GenericAuthError(error.message!));
     }
+  }
+
+  @override
+  Future<AppUser> fetchUserFromFirebase(String email) async {
+    final userRef = FirebaseFirestore.instance.collection('users').doc(email).withConverter<AppUser>(
+        fromFirestore: ((snapshot, options) => AppUser.fromJson(snapshot.data()!)),
+        toFirestore: (user, _) => {
+              'addressBookId': user.addressBookId,
+              'appSettingsId': user.appSettingsId,
+              'displayName': user.displayName,
+              'email': user.email,
+              'profilePic': user.profilePic,
+              'walletId': user.walletId,
+            });
+    final docSnapshot = await userRef.get();
+    final user = docSnapshot.data();
+    if (user != null) {
+      return user;
+    } else {
+      throw FirebaseAuthException(code: 'user-not-exist');
+    }
+  }
+
+  @override
+  Future<Either<FailedToCreateUser, AppUser>> createNewUser() {
+    // TODO: implement createNewUser
+    throw UnimplementedError();
   }
 }

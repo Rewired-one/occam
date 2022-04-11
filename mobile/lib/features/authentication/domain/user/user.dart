@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 abstract class IUser {
   late final String id;
   late final String email;
@@ -32,6 +34,11 @@ abstract class IUser {
 
   /// Delete this user and all corresponding data entries
   Future<void> destroy();
+
+  @override
+  String toString() {
+    return 'IUser(id: $id, email: $email, displayName: $displayName, profilePic: $profilePic, walletId: $walletId, addressBookId: $addressBookId, appSettingsId: $appSettingsId)';
+  }
 }
 
 class AppUser implements IUser {
@@ -114,19 +121,35 @@ class AppUser implements IUser {
     return result;
   }
 
-  factory AppUser.fromMap(Map<String, dynamic> map) {
+  factory AppUser.fromSnapshot(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
     return AppUser(
-      addressBookId: map['addressBookId'],
-      appSettingsId: map['appSettingsId'] ?? '',
-      displayName: map['displayName'] ?? '',
-      email: map['email'] ?? '',
-      id: map['id'] ?? '',
-      profilePic: map['profilePic'],
-      walletId: map['walletId'],
-    );
+        appSettingsId: data['appSettings'],
+        displayName: data['displayName'],
+        email: data['email'],
+        id: doc.id,
+        addressBookId: doc['addressBookId'],
+        profilePic: doc['profilePic'],
+        walletId: doc['walletId']);
   }
 
-  String toJson() => json.encode(toMap());
+  Map<String, dynamic> toJson() => {
+        'addressBookId': addressBookId,
+        'appSettingsId': appSettingsId,
+        'displayName': displayName,
+        'email': email,
+        'profilePic': profilePic,
+        'walletId': walletId,
+      };
 
-  factory AppUser.fromJson(String source) => AppUser.fromMap(json.decode(source));
+  AppUser.fromJson(Map<String, dynamic> json)
+      : this(
+          addressBookId: json['addressBookId'],
+          appSettingsId: json['appSetingsId'],
+          displayName: json['displayName'],
+          email: json['email'],
+          id: json['id'],
+          profilePic: json['profilePic'],
+          walletId: json['walletId'],
+        );
 }

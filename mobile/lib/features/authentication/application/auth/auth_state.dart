@@ -12,7 +12,24 @@ class AuthLoading extends AuthState {
 }
 
 class AuthSuccess extends AuthState {
-  AuthSuccess();
+  AuthSuccess({
+    required this.user,
+  });
+
+  final AppUser user;
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is AuthSuccess && other.user == user;
+  }
+
+  @override
+  int get hashCode => user.hashCode;
+
+  @override
+  String toString() => 'AuthSuccess(user: $user)';
 }
 
 class AuthError extends AuthState {
