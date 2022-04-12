@@ -17,10 +17,8 @@ class _SignInScreenState extends State<SignInScreen> {
   String email = '';
   String password = '';
 
-  void signIn() {
-    context.read<AuthCubit>().signIn(email, password);
-
-    final state = context.read<AuthCubit>().state;
+  void signIn() async {
+    await context.read<AuthCubit>().signIn(email, password);
   }
 
   @override

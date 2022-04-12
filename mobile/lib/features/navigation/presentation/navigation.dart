@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:mobile/features/authentication/presentation/sign_in.dart';
+import 'package:mobile/features/wallets/presentation/wallets_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -12,19 +15,44 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        title: const Text('Occam Wallet'),
+        actions: [
+          const Center(
+            child: Text(
+              'Logout',
+            ),
+          ),
+          IconButton(
+            onPressed: () async {
+              await context.read<AuthCubit>().signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const SignInScreen(),
+                ),
+              );
+            },
+            icon: const Icon(
+              Icons.logout,
+            ),
+          ),
+        ],
+      ),
       body: IndexedStack(
         index: 0,
-        children: [
+        children: const [
+          WalletsScreen(),
           SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: Center(
-              child: ElevatedButton(
-                child: const Text('Log Out'),
-                onPressed: () => FirebaseAuth.instance.signOut(),
+              child: Text(
+                'Settings Page',
               ),
             ),
-          ),
+          )
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

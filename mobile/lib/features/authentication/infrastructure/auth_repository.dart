@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:mobile/features/authentication/domain/auth/auth_failure.dart';
 import 'package:mobile/features/authentication/domain/auth/i_auth_facade.dart';
@@ -80,5 +80,10 @@ class AuthRepository implements IAuthFacade {
   Future<Either<FailedToCreateUser, AppUser>> createNewUser() {
     // TODO: implement createNewUser
     throw UnimplementedError();
+  }
+
+  @override
+  Future<void> logout() async {
+    await FirebaseAuth.instance.signOut();
   }
 }

@@ -19,4 +19,9 @@ class AuthCubit extends Cubit<AuthState> {
       return emit(AuthState(status: AuthStatus.success, user: r));
     });
   }
+
+  Future<void> signOut() async {
+    await authRepository.logout();
+    emit(AuthState(status: AuthStatus.initial));
+  }
 }

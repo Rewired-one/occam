@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/wallets/application/wallets_cubit.dart';
+import 'package:mobile/features/wallets/infrastructure.dart/wallet_repository.dart';
 import 'package:mobile/firebase_options.dart';
 
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
@@ -22,7 +24,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (_) => AuthCubit(AuthRepository()))],
+      providers: [
+        BlocProvider(create: (_) => AuthCubit(AuthRepository())),
+        BlocProvider(create: (_) => WalletsCubit(WalletRepository())),
+      ],
       child: MaterialApp(
         title: 'Occam Wallet App',
         debugShowCheckedModeBanner: false,
