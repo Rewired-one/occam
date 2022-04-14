@@ -16,6 +16,7 @@ class _WalletsScreenState extends State<WalletsScreen> {
       listener: (context, state) {
         if (state.status == WalletsStatus.initial) {
           // Get Wallets
+          context.read<WalletsCubit>().fetchWallets();
         }
       },
       builder: (context, state) {

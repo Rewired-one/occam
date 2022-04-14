@@ -8,4 +8,8 @@ part 'wallets_state.dart';
 class WalletsCubit extends Cubit<WalletsState> {
   WalletsCubit(this.walletRepository) : super(WalletsState(status: WalletsStatus.initial));
   final WalletRepository walletRepository;
+
+  Future<void> fetchWallets() async {
+    final wallets = walletRepository.fetchWallets();
+  }
 }
