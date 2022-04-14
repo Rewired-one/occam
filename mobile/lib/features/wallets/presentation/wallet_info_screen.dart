@@ -20,6 +20,14 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
     }
   }
 
+  // TODO:
+  // [ ] Display Balance
+  // [ ] Display Selected Network
+  // [ ] Display User buttons
+  //     [ ] Airdrop SOL
+  //     [ ] Send SOL
+  //     [ ] Recieve SOL (Request a Payment)
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<WalletsCubit, WalletsState>(

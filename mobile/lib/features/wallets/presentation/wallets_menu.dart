@@ -24,8 +24,7 @@ class _WalletsMenuState extends State<WalletsMenu> {
   @override
   Widget build(BuildContext context) {
     // TODO:
-    // [ ] Last selected wallet should be displayed here
-    // [ ] If not wallets, then setup a wallet button
+    // [ ] Add Wallet / Connect a new Wallet
 
     return BlocConsumer<WalletsCubit, WalletsState>(
       listener: (context, state) {
