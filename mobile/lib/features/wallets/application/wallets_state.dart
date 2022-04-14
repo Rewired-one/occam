@@ -5,7 +5,7 @@ enum WalletsStatus { initial, loading, success, failure }
 class WalletsState {
   WalletsState({
     required this.status,
-    this.wallets = const [],
+    this.wallets = const <Wallet>[],
   });
   final WalletsStatus status;
   final List<Wallet> wallets;

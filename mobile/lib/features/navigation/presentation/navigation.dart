@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
 import 'package:mobile/features/authentication/presentation/sign_in.dart';
+import 'package:mobile/features/navigation/presentation/left_menu.dart';
 import 'package:mobile/features/wallets/presentation/wallets_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -40,6 +41,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ),
         ],
       ),
+      drawer: const LeftMenu(),
       body: IndexedStack(
         index: 0,
         children: const [

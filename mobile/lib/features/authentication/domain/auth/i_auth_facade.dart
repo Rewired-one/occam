@@ -18,5 +18,6 @@ abstract class IAuthFacade {
     required String newEmail,
     required String newPassword,
   });
+  Future<AppUser?> fetchUser(String email);
   Future<void> logout();
 }

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:dartz/dartz.dart' as dartz;
 import 'package:flutter/foundation.dart';
 import 'package:mobile/features/wallets/domain/wallet.dart';
 import 'package:mobile/features/wallets/infrastructure.dart/wallet_repository.dart';
@@ -10,6 +11,20 @@ class WalletsCubit extends Cubit<WalletsState> {
   final WalletRepository walletRepository;
 
   Future<void> fetchWallets() async {
-    final wallets = walletRepository.fetchWallets();
+    emit(WalletsState(status: WalletsStatus.loading));
+    final wallets = await walletRepository.fetchWallets();
+    wallets.fold(
+      (l) => emit(
+        WalletsState(
+          status: WalletsStatus.success,
+          wallets: l,
+        ),
+      ),
+      (r) => emit(
+        WalletsState(
+          status: WalletsStatus.failure,
+        ),
+      ),
+    );
   }
 }

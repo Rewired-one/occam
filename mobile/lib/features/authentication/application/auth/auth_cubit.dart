@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/features/authentication/domain/user/user.dart';
 import 'package:mobile/features/authentication/domain/auth/auth_failure.dart';
 import 'package:mobile/features/authentication/infrastructure/auth_repository.dart';
@@ -23,5 +24,20 @@ class AuthCubit extends Cubit<AuthState> {
   Future<void> signOut() async {
     await authRepository.logout();
     emit(AuthState(status: AuthStatus.initial));
+  }
+
+  /// Fetches a user based on their email address. Calling this should only happen if authentication has been persisted
+  /// and user is already signed in.
+  Future<void> fetchUser() async {
+    emit(AuthState(status: AuthStatus.loading));
+
+    final email = FirebaseAuth.instance.currentUser?.email;
+    final appUser = await authRepository.fetchUser(email!);
+
+    if (appUser != null) {
+      emit(AuthState(status: AuthStatus.success, user: appUser));
+    } else {
+      emit(AuthState(status: AuthStatus.failure));
+    }
   }
 }

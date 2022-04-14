@@ -34,11 +34,6 @@ abstract class IUser {
 
   /// Delete this user and all corresponding data entries
   Future<void> destroy();
-
-  @override
-  String toString() {
-    return 'IUser(id: $id, email: $email, displayName: $displayName, profilePic: $profilePic, walletId: $walletId, addressBookId: $addressBookId, appSettingsId: $appSettingsId)';
-  }
 }
 
 class AppUser implements IUser {
@@ -152,4 +147,9 @@ class AppUser implements IUser {
           profilePic: json['profilePic'],
           walletId: json['walletId'],
         );
+
+  @override
+  String toString() {
+    return 'AppUser(id: $id, email: $email, displayName: $displayName, profilePic: $profilePic, walletId: $walletId, addressBookId: $addressBookId, appSettingsId: $appSettingsId)';
+  }
 }

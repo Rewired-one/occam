@@ -86,4 +86,16 @@ class AuthRepository implements IAuthFacade {
   Future<void> logout() async {
     await FirebaseAuth.instance.signOut();
   }
+
+  @override
+  Future<AppUser?> fetchUser(String email) async {
+    try {
+      final data = await FirebaseFirestore.instance.collection('users').doc(email).get();
+      if (!data.exists) throw Exception('User does not exists!');
+      return AppUser.fromSnapshot(data);
+    } catch (error) {
+      print('ERROR: $error');
+      return null;
+    }
+  }
 }
