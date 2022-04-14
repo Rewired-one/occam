@@ -14,12 +14,17 @@ class WalletsCubit extends Cubit<WalletsState> {
     emit(WalletsState(status: WalletsStatus.loading));
     final wallets = await walletRepository.fetchWallets();
     wallets.fold(
-      (l) => emit(
-        WalletsState(
-          status: WalletsStatus.success,
-          wallets: l,
-        ),
-      ),
+      (l) {
+        // Find the last selected wallet in Memory
+        // If no selected wallet, load index 0
+        emit(
+          WalletsState(
+            status: WalletsStatus.success,
+            wallets: l,
+            selectedWallet: l[0],
+          ),
+        );
+      },
       (r) => emit(
         WalletsState(
           status: WalletsStatus.failure,

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
-import 'package:mobile/features/authentication/presentation/sign_in.dart';
+
 import 'package:mobile/features/wallets/application/wallets_cubit.dart';
-import 'package:mobile/features/wallets/presentation/wallets_screen.dart';
+import 'package:mobile/features/wallets/presentation/wallet_info_screen.dart';
+import 'package:mobile/features/wallets/presentation/wallets_menu.dart';
+import 'package:mobile/features/authentication/presentation/sign_in.dart';
+import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
 
 class NavigationScreen extends StatefulWidget {
   const NavigationScreen({Key? key}) : super(key: key);
@@ -13,10 +15,13 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
-  @override
-  void initState() {
-    super.initState();
-    context.read<WalletsCubit>().fetchWallets();
+  int currentIndex = 0;
+
+  // ignore: unused_element
+  _changeIndex(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 
   @override
@@ -47,19 +52,11 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ),
         ],
       ),
-      drawer: const WalletsScreen(),
+      drawer: const WalletsMenu(),
       body: IndexedStack(
-        index: 0,
+        index: currentIndex,
         children: const [
-          SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: Center(
-              child: Text(
-                'View Wallets Page',
-              ),
-            ),
-          ),
+          WalletInfoScreen(),
           SizedBox(
             width: double.infinity,
             height: double.infinity,
@@ -72,8 +69,8 @@ class _NavigationScreenState extends State<NavigationScreen> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: 0,
-        onTap: (index) {},
+        currentIndex: currentIndex,
+        onTap: _changeIndex,
         items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance_wallet),

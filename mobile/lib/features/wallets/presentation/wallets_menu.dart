@@ -4,14 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/wallets/application/wallets_cubit.dart';
 
-class WalletsScreen extends StatefulWidget {
-  const WalletsScreen({Key? key}) : super(key: key);
+class WalletsMenu extends StatefulWidget {
+  const WalletsMenu({Key? key}) : super(key: key);
 
   @override
-  State<WalletsScreen> createState() => _WalletsScreenState();
+  State<WalletsMenu> createState() => _WalletsMenuState();
 }
 
-class _WalletsScreenState extends State<WalletsScreen> {
+class _WalletsMenuState extends State<WalletsMenu> {
   @override
   void initState() {
     super.initState();
