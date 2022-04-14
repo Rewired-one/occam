@@ -15,7 +15,10 @@ class _WalletsScreenState extends State<WalletsScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<WalletsCubit>().fetchWallets();
+    final walletsCubit = context.read<WalletsCubit>();
+    if (walletsCubit.state.status == WalletsStatus.initial) {
+      walletsCubit.fetchWallets();
+    }
   }
 
   @override
@@ -26,7 +29,7 @@ class _WalletsScreenState extends State<WalletsScreen> {
 
     return BlocConsumer<WalletsCubit, WalletsState>(
       listener: (context, state) {
-        print('WALLET STATE FROM LISTENER: ${state.status}');
+        // TODO: implement listener
       },
       builder: (context, state) {
         if (state.status == WalletsStatus.loading || state.status == WalletsStatus.initial) {
@@ -47,33 +50,49 @@ class _WalletsScreenState extends State<WalletsScreen> {
             ),
           );
         }
-
-        // Load the most recent selected wallet Balance
-
-        return SizedBox(
-          width: double.infinity,
-          height: double.infinity,
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  physics: const ClampingScrollPhysics(),
-                  itemCount: state.wallets.length,
-                  itemBuilder: (context, index) {
-                    final wallet = state.wallets[index];
-                    return Container(
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey, width: 1),
-                      ),
-                      padding: const EdgeInsets.all(20),
-                      child: Center(
-                        child: Text(wallet.name),
-                      ),
-                    );
-                  },
+        return Drawer(
+          child: SizedBox(
+            width: double.infinity,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  width: double.infinity,
+                  child: DrawerHeader(
+                    margin: EdgeInsets.zero,
+                    decoration: BoxDecoration(
+                      color: Colors.blueAccent,
+                    ),
+                    child: Text('Drawer Header'),
+                  ),
                 ),
-              )
-            ],
+                const SizedBox(
+                  height: 20,
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 20.0),
+                  child: Text(
+                    'Wallets',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+                const Divider(),
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: context.read<WalletsCubit>().state.wallets.length,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      final wallet = context.read<WalletsCubit>().state.wallets[index];
+
+                      return Container();
+                    },
+                  ),
+                )
+              ],
+            ),
           ),
         );
       },

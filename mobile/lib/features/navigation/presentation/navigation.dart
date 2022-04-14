@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
 import 'package:mobile/features/authentication/presentation/sign_in.dart';
-import 'package:mobile/features/navigation/presentation/left_menu.dart';
+import 'package:mobile/features/wallets/application/wallets_cubit.dart';
 import 'package:mobile/features/wallets/presentation/wallets_screen.dart';
 
 class NavigationScreen extends StatefulWidget {
@@ -13,6 +13,12 @@ class NavigationScreen extends StatefulWidget {
 }
 
 class _NavigationScreenState extends State<NavigationScreen> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<WalletsCubit>().fetchWallets();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,11 +47,19 @@ class _NavigationScreenState extends State<NavigationScreen> {
           ),
         ],
       ),
-      drawer: const LeftMenu(),
+      drawer: const WalletsScreen(),
       body: IndexedStack(
         index: 0,
         children: const [
-          WalletsScreen(),
+          SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Text(
+                'View Wallets Page',
+              ),
+            ),
+          ),
           SizedBox(
             width: double.infinity,
             height: double.infinity,
