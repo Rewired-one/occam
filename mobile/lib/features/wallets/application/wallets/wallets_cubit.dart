@@ -7,11 +7,11 @@ import 'package:mobile/features/wallets/infrastructure.dart/wallet_repository.da
 part 'wallets_state.dart';
 
 class WalletsCubit extends Cubit<WalletsState> {
-  WalletsCubit(this.walletRepository) : super(WalletsState(status: WalletsStatus.initial));
+  WalletsCubit(this.walletRepository) : super(const WalletsState(status: WalletsStatus.initial));
   final WalletRepository walletRepository;
 
   Future<void> fetchWallets() async {
-    emit(WalletsState(status: WalletsStatus.loading));
+    emit(const WalletsState(status: WalletsStatus.loading));
     final wallets = await walletRepository.fetchWallets();
     wallets.fold(
       (l) {
@@ -26,9 +26,19 @@ class WalletsCubit extends Cubit<WalletsState> {
         );
       },
       (r) => emit(
-        WalletsState(
+        const WalletsState(
           status: WalletsStatus.failure,
         ),
+      ),
+    );
+  }
+
+  void selectWallet(int index) {
+    emit(
+      WalletsState(
+        status: WalletsStatus.success,
+        wallets: state.wallets,
+        selectedWallet: state.wallets[index],
       ),
     );
   }

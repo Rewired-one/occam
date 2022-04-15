@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:mobile/features/wallets/application/wallets_cubit.dart';
-import 'package:mobile/features/wallets/presentation/wallet_info_screen.dart';
+import 'package:mobile/features/wallets/presentation/selected_wallet.dart';
 import 'package:mobile/features/wallets/presentation/wallets_menu.dart';
 import 'package:mobile/features/authentication/presentation/sign_in.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
@@ -56,7 +55,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
       body: IndexedStack(
         index: currentIndex,
         children: const [
-          WalletInfoScreen(),
+          SelectedWallet(),
           SizedBox(
             width: double.infinity,
             height: double.infinity,

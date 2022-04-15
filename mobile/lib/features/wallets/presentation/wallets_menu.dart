@@ -2,7 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/wallets/application/wallets_cubit.dart';
+import 'package:mobile/features/wallets/application/wallets/wallets_cubit.dart';
 
 class WalletsMenu extends StatefulWidget {
   const WalletsMenu({Key? key}) : super(key: key);
@@ -81,12 +81,43 @@ class _WalletsMenuState extends State<WalletsMenu> {
                 const Divider(),
                 Expanded(
                   child: ListView.builder(
+                    padding: EdgeInsets.zero,
                     itemCount: context.read<WalletsCubit>().state.wallets.length,
                     shrinkWrap: true,
                     itemBuilder: (context, index) {
                       final wallet = context.read<WalletsCubit>().state.wallets[index];
-
-                      return Container();
+                      final first4 = wallet.pubKey.substring(0, 4);
+                      final last4 = wallet.pubKey.substring(wallet.pubKey.length - 4, wallet.pubKey.length);
+                      return ListTile(
+                        onTap: () {
+                          context.read<WalletsCubit>().selectWallet(index);
+                          Navigator.pop(context);
+                        },
+                        title: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Flexible(
+                              child: Text(
+                                wallet.name,
+                                style: const TextStyle(
+                                  fontSize: 20,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 1,
+                              ),
+                            ),
+                            const SizedBox(width: 5),
+                            Text(
+                              '($first4...$last4)',
+                              style: const TextStyle(
+                                fontSize: 16,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 2,
+                            ),
+                          ],
+                        ),
+                      );
                     },
                   ),
                 )

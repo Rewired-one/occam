@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/wallets/application/wallets_cubit.dart';
+import 'package:mobile/features/wallets/application/wallets/wallets_cubit.dart';
+import 'package:mobile/features/wallets/presentation/wallet_info.dart';
 
-class WalletInfoScreen extends StatefulWidget {
-  const WalletInfoScreen({Key? key}) : super(key: key);
+class SelectedWallet extends StatefulWidget {
+  const SelectedWallet({Key? key}) : super(key: key);
 
   @override
-  State<WalletInfoScreen> createState() => _WalletInfoScreenState();
+  State<SelectedWallet> createState() => _SelectedWalletState();
 }
 
-class _WalletInfoScreenState extends State<WalletInfoScreen> {
+class _SelectedWalletState extends State<SelectedWallet> {
   late final walletsCubit = context.read<WalletsCubit>();
 
   @override
@@ -53,11 +54,17 @@ class _WalletInfoScreenState extends State<WalletInfoScreen> {
             ),
           );
         }
-        return const SizedBox(
-          child: Center(
-            child: Text('Wallet Info'),
-          ),
-        );
+        if (state.wallets.isEmpty) {
+          return const SizedBox(
+            width: double.infinity,
+            height: double.infinity,
+            child: Center(
+              child: Text('Setup your First Wallet!'),
+            ),
+          );
+        } else {
+          return WalletInfo(wallet: state.selectedWallet!);
+        }
       },
     );
   }

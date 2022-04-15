@@ -2,8 +2,9 @@ part of 'wallets_cubit.dart';
 
 enum WalletsStatus { initial, loading, success, failure }
 
+@immutable
 class WalletsState {
-  WalletsState({
+  const WalletsState({
     required this.status,
     this.selectedWallet,
     this.wallets = const <Wallet>[],
