@@ -7,7 +7,6 @@ const { Keypair } = require('@solana/web3.js');
 const { exec } = require('child_process');
 
 const { initializeApp, cert } = require("firebase-admin/app");
-const { getFirestore } = require('firebase-admin/firestore');
 var serviceAccount = require("./service_account.json");
 
 var app = express();
@@ -24,16 +23,41 @@ app.get('/createWallet', (req, res) => {
         const split = stdout.split('\n');
         const pubKey = split[2].split(':')[1].trim();
         const mnemonicPhrase = split[5];
-        if(error !== null) {
+        if (error !== null) {
             console.log(`exec error: ${error}`);
         }
     })
     res.send({});
 })
 
+app.get('/createUser', (req, res) => {
+
+})
+
+app.post('/checkBalance', (req, res) => {
+    const { pub_key } = req.body
+
+    exec(`sh ./scripts/balance.sh ${pub_key}`, (error, stdout, stderr) => {
+
+        if (error !== null) {
+            return res.send({
+                success: false,
+                balance: null
+            })
+        }
+
+        const balance = stdout.split(' ')[0]
+        return res.send({
+            success: true,
+            balance
+        });
+    });
+
+});
+
 app.listen(3000, () => {
     console.log(`Example app listening on port ${3000}`);
     initializeApp({
         credential: cert(serviceAccount)
-    })
-})
+    });
+});
