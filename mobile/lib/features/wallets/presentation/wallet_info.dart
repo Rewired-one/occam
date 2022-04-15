@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/wallets/application/wallet_info/wallet_info_cubit.dart';
 import 'package:mobile/features/wallets/domain/wallet.dart';
 
 class WalletInfo extends StatefulWidget {
@@ -11,29 +13,63 @@ class WalletInfo extends StatefulWidget {
 
 class _WalletInfoState extends State<WalletInfo> {
   @override
+  void didUpdateWidget(covariant WalletInfo oldWidget) {
+    if (widget.wallet.name != oldWidget.wallet.name) {
+      context.read<WalletInfoCubit>().reset();
+    }
+
+    super.didUpdateWidget(oldWidget);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: double.infinity,
-      width: double.infinity,
-      child: Column(
-        children: [
-          const SizedBox(height: 50),
-          Text(
-            widget.wallet.name,
-            style: const TextStyle(
-              fontSize: 20,
-            ),
+    return BlocConsumer<WalletInfoCubit, WalletInfoState>(
+      listener: (context, state) {
+        // TODO: implement listener
+      },
+      builder: (context, state) {
+        if (state.status == WalletInfoStatus.initial) {
+          print('initialize');
+          context.read<WalletInfoCubit>().fetchBalance(widget.wallet.pubKey);
+        }
+
+        if (state.status == WalletInfoStatus.loading) {
+          print('LOADING');
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+
+        if (state.status == WalletInfoStatus.failure) {
+          return const Center(
+            child: Text('Failed to Load Balance!'),
+          );
+        }
+
+        return SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Column(
+            children: [
+              const SizedBox(height: 50),
+              Text(
+                widget.wallet.name,
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                '\$0.00',
+                style: TextStyle(
+                  fontSize: 40,
+                  color: Colors.amber,
+                ),
+              )
+            ],
           ),
-          const SizedBox(height: 20),
-          const Text(
-            '\$0.00',
-            style: TextStyle(
-              fontSize: 40,
-              color: Colors.amber,
-            ),
-          )
-        ],
-      ),
+        );
+      },
     );
   }
 }
