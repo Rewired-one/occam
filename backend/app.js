@@ -31,8 +31,11 @@ app.get('/createWallet', (req, res) => {
 })
 
 app.get('/createUser', (req, res) => {
-
-})
+    // TODO: 
+        // [ ] Add User to Firebase
+        // [ ] Create Wallet and Address Book Docs
+        // [ ] Create Settings Doc
+});
 
 app.post('/checkBalance', (req, res) => {
     const { pub_key } = req.body
