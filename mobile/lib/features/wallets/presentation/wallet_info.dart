@@ -13,11 +13,16 @@ class WalletInfo extends StatefulWidget {
 
 class _WalletInfoState extends State<WalletInfo> {
   @override
+  void initState() {
+    context.read<WalletInfoCubit>().reset();
+    super.initState();
+  }
+
+  @override
   void didUpdateWidget(covariant WalletInfo oldWidget) {
     if (widget.wallet.name != oldWidget.wallet.name) {
       context.read<WalletInfoCubit>().reset();
     }
-
     super.didUpdateWidget(oldWidget);
   }
 
@@ -29,12 +34,10 @@ class _WalletInfoState extends State<WalletInfo> {
       },
       builder: (context, state) {
         if (state.status == WalletInfoStatus.initial) {
-          print('initialize');
           context.read<WalletInfoCubit>().fetchBalance(widget.wallet.pubKey);
         }
 
         if (state.status == WalletInfoStatus.loading) {
-          print('LOADING');
           return const Center(
             child: CircularProgressIndicator(),
           );
