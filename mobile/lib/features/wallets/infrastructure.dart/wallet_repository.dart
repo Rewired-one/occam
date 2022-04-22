@@ -25,4 +25,10 @@ class WalletRepository extends IWalletFacade {
       return right(unit);
     }
   }
+
+  @override
+  Future<Either<Wallet, Unit>> createNewWallet({required String displayName}) {
+    // TODO: implement createNewWallet
+    throw UnimplementedError();
+  }
 }

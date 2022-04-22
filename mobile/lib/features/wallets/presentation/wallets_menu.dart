@@ -40,6 +40,7 @@ class _WalletsMenuState extends State<WalletsMenu> {
             ),
           );
         }
+
         if (state.status == WalletsStatus.failure) {
           return const SizedBox(
             width: double.infinity,
@@ -49,6 +50,7 @@ class _WalletsMenuState extends State<WalletsMenu> {
             ),
           );
         }
+
         return Drawer(
           child: SizedBox(
             width: double.infinity,
@@ -79,48 +81,58 @@ class _WalletsMenuState extends State<WalletsMenu> {
                   ),
                 ),
                 const Divider(),
-                Expanded(
-                  child: ListView.builder(
-                    padding: EdgeInsets.zero,
-                    itemCount: context.read<WalletsCubit>().state.wallets.length,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      final wallet = context.read<WalletsCubit>().state.wallets[index];
-                      final first4 = wallet.pubKey.substring(0, 4);
-                      final last4 = wallet.pubKey.substring(wallet.pubKey.length - 4, wallet.pubKey.length);
-                      return ListTile(
-                        onTap: () {
-                          context.read<WalletsCubit>().selectWallet(index);
-                          Navigator.pop(context);
-                        },
-                        title: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Flexible(
-                              child: Text(
-                                wallet.name,
-                                style: const TextStyle(
-                                  fontSize: 20,
-                                ),
-                                overflow: TextOverflow.ellipsis,
-                                maxLines: 1,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            Text(
-                              '($first4...$last4)',
+                ListView.builder(
+                  physics: const ClampingScrollPhysics(),
+                  padding: EdgeInsets.zero,
+                  itemCount: context.read<WalletsCubit>().state.wallets.length,
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    final wallet = context.read<WalletsCubit>().state.wallets[index];
+                    final first4 = wallet.pubKey.substring(0, 4);
+                    final last4 = wallet.pubKey.substring(wallet.pubKey.length - 4, wallet.pubKey.length);
+                    return ListTile(
+                      onTap: () {
+                        context.read<WalletsCubit>().selectWallet(index);
+                        Navigator.pop(context);
+                      },
+                      title: Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Flexible(
+                            child: Text(
+                              wallet.name,
                               style: const TextStyle(
-                                fontSize: 16,
+                                fontSize: 20,
                               ),
                               overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
+                              maxLines: 1,
                             ),
-                          ],
-                        ),
-                      );
-                    },
-                  ),
-                )
+                          ),
+                          const SizedBox(width: 5),
+                          Text(
+                            '($first4...$last4)',
+                            style: const TextStyle(
+                              fontSize: 16,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+                const Divider(),
+                ListTile(
+                  leading: const Icon(Icons.add),
+                  title: const Text('Add / Connect Wallet'),
+                  onTap: () {
+                    // Create and store a new wallet
+                    // Emit this new wallet
+                    // Display Wallet Info Screen
+                  },
+                ),
+                const Divider(),
               ],
             ),
           ),

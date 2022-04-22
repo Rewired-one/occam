@@ -14,7 +14,7 @@ class WalletInfo extends StatefulWidget {
 class _WalletInfoState extends State<WalletInfo> {
   @override
   void initState() {
-    context.read<WalletInfoCubit>().reset();
+    context.read<WalletInfoCubit>().fetchBalance(widget.wallet.pubKey);
     super.initState();
   }
 
@@ -30,13 +30,11 @@ class _WalletInfoState extends State<WalletInfo> {
   Widget build(BuildContext context) {
     return BlocConsumer<WalletInfoCubit, WalletInfoState>(
       listener: (context, state) {
-        // TODO: implement listener
-      },
-      builder: (context, state) {
         if (state.status == WalletInfoStatus.initial) {
           context.read<WalletInfoCubit>().fetchBalance(widget.wallet.pubKey);
         }
-
+      },
+      builder: (context, state) {
         if (state.status == WalletInfoStatus.loading) {
           return const Center(
             child: CircularProgressIndicator(),
@@ -53,8 +51,8 @@ class _WalletInfoState extends State<WalletInfo> {
           height: double.infinity,
           width: double.infinity,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 50),
               Text(
                 widget.wallet.name,
                 style: const TextStyle(
