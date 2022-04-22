@@ -23,6 +23,7 @@ app.get('/createWallet', (req, res) => {
         const split = stdout.split('\n');
         const pubKey = split[2].split(':')[1].trim();
         const mnemonicPhrase = split[5];
+
         if (error !== null) {
             console.log(`exec error: ${error}`);
         }
