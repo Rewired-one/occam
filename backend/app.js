@@ -9,6 +9,7 @@ const bip39 = require('bip39')
 const bs58 = require('bs58')
 
 const { initializeApp, cert } = require("firebase-admin/app");
+const { setDoc, FieldValue, getFirestore } = require("firebase-admin/firestore");
 var serviceAccount = require("./service_account.json");
 
 var app = express();
@@ -19,26 +20,34 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/createWallet', (req, res) => {
-    const { userId } = req.body
+app.post('/createWallet', (req, res) => {
+    const { userId, name } = req.body;
     exec('sh ./scripts/wallet.sh', (error, stdout, stderr) => {
+
         const split = stdout.split('\n');
-        const pubKey = split[2].split(':')[1].trim();
         const mnemonicPhrase = split[5];
-
-        console.log('PUB KEY: ', pubKey)
-
-        console.log('MNEMONIC: ', mnemonicPhrase)
 
         const seed = bip39.mnemonicToSeedSync(mnemonicPhrase, "");
         const keypair = Keypair.fromSeed(seed.slice(0, 32));
 
-        console.log('KEYPAIR PUB KEY: ', keypair.publicKey.toBase58());
-        const privKey = bs58.encode(keypair.secretKey);
-        console.log('KEYPAIR SECRET KEY: ', privKey);
+        const privKeyBase58String = bs58.encode(keypair.secretKey);
+        const pubKey = keypair.publicKey.toBase58();
 
-        console.log('PRIV KEY ARRAY: ', keypair.privKey)
+        const data = {
+            pub_key: pubKey,
+            mneumonic: mnemonicPhrase,
+            priv_key_array: keypair.secretKey,
+            priv_key: privKeyBase58String,
+            name: name
+        };
+
+        const db = getFirestore();
+
+        db.collection('wallets').doc(userId).update({
+            wallets: FieldValue.arrayUnion(data)
+        })
         
+
 
         if (error !== null) {
             console.log(`exec error: ${error}`);
