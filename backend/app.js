@@ -5,6 +5,8 @@ var logger = require('morgan');
 
 const { Keypair } = require('@solana/web3.js');
 const { exec } = require('child_process');
+const bip39 = require('bip39')
+const bs58 = require('bs58')
 
 const { initializeApp, cert } = require("firebase-admin/app");
 var serviceAccount = require("./service_account.json");
@@ -23,6 +25,20 @@ app.get('/createWallet', (req, res) => {
         const split = stdout.split('\n');
         const pubKey = split[2].split(':')[1].trim();
         const mnemonicPhrase = split[5];
+
+        console.log('PUB KEY: ', pubKey)
+
+        console.log('MNEMONIC: ', mnemonicPhrase)
+
+        const seed = bip39.mnemonicToSeedSync(mnemonicPhrase, "");
+        const keypair = Keypair.fromSeed(seed.slice(0, 32));
+
+        console.log('KEYPAIR PUB KEY: ', keypair.publicKey.toBase58());
+        const privKey = bs58.encode(keypair.secretKey);
+        console.log('KEYPAIR SECRET KEY: ', privKey);
+
+        console.log('PRIV KEY ARRAY: ', keypair.privKey)
+        
 
         if (error !== null) {
             console.log(`exec error: ${error}`);
