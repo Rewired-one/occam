@@ -52,7 +52,7 @@ class WalletsCubit extends Cubit<WalletsState> {
 
   void setupNewWallet() {
     emit(
-      const WalletsState(status: WalletsStatus.setup),
+      WalletsState(status: WalletsStatus.setup, wallets: state.wallets),
     );
   }
 

@@ -24,47 +24,59 @@ app.post('/createWallet', (req, res) => {
     const { userId, name } = req.body;
     exec('sh ./scripts/wallet.sh', (error, stdout, stderr) => {
 
-        const split = stdout.split('\n');
-        const mnemonicPhrase = split[5];
+        try {
+            const split = stdout.split('\n');
+            const mnemonicPhrase = split[5];
 
-        const seed = bip39.mnemonicToSeedSync(mnemonicPhrase, "");
-        const keypair = Keypair.fromSeed(seed.slice(0, 32));
+            const seed = bip39.mnemonicToSeedSync(mnemonicPhrase, "");
+            const keypair = Keypair.fromSeed(seed.slice(0, 32));
 
-        const privKeyBase58String = bs58.encode(keypair.secretKey);
-        const pubKey = keypair.publicKey.toBase58();
+            const privKeyBase58String = bs58.encode(keypair.secretKey);
+            const pubKey = keypair.publicKey.toBase58();
 
-        const data = {
-            pub_key: pubKey,
-            mneumonic: mnemonicPhrase,
-            priv_key_array: keypair.secretKey,
-            priv_key: privKeyBase58String,
-            name: name
-        };
+            const data = {
+                pub_key: pubKey,
+                mneumonic: mnemonicPhrase,
+                priv_key_array: keypair.secretKey,
+                priv_key: privKeyBase58String,
+                name: name
+            };
 
-        const db = getFirestore();
+            const db = getFirestore();
 
-        db.collection('wallets').doc(userId).update({
-            wallets: FieldValue.arrayUnion(data)
-        })
-        
+            db.collection('wallets').doc(userId).update({
+                wallets: FieldValue.arrayUnion(data)
+            })
 
 
-        if (error !== null) {
-            console.log(`exec error: ${error}`);
+
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+                throw Error(error)
+            }
+
+            res.send({
+                success: true,
+                ...data
+            });
+
+        } catch (error) {
+            res.send({
+                success: false,
+                error: error
+            })
         }
 
-        res.send({
-            ...data   
-        });
+        
     })
-    
+
 })
 
 app.get('/createUser', (req, res) => {
     // TODO: 
-        // [ ] Add User to Firebase
-        // [ ] Create Wallet and Address Book Docs
-        // [ ] Create Settings Doc
+    // [ ] Add User to Firebase
+    // [ ] Create Wallet and Address Book Docs
+    // [ ] Create Settings Doc
 });
 
 app.post('/checkBalance', (req, res) => {
@@ -73,6 +85,7 @@ app.post('/checkBalance', (req, res) => {
     exec(`sh ./scripts/balance.sh ${pub_key}`, (error, stdout, stderr) => {
 
         if (error !== null) {
+            console.log('ERROR: ', error)
             return res.send({
                 success: false,
                 balance: null
@@ -80,6 +93,8 @@ app.post('/checkBalance', (req, res) => {
         }
 
         const balance = stdout.split(' ')[0]
+        console.log('BALANCE: ', balance)
+
         return res.send({
             success: true,
             balance

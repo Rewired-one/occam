@@ -40,7 +40,6 @@ class WalletRepository extends IWalletFacade {
       if (response.statusCode == 200) {
         final parsed = jsonDecode(response.body);
         final wallet = Wallet.fromSnapshot(parsed);
-        print(inspect(wallet));
         return left(wallet);
       } else {
         throw Exception('Error with request');

@@ -1,13 +1,19 @@
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
 /// A User's wallet which store's SOL and Signs Transactions
 abstract class IWallet {
-  late String name;
-  late String pubKey;
-  late String privKey;
+  late final String name;
+  late final String pubKey;
+  late final String privKey;
+
+  /// Private Keypair Blob
+  // late final Uint8List privKeyPair;
 
   /// A Mneumonic Passphrase 12 - 24 words
-  late String mneumonic;
+  late final String mneumonic;
 
   /// Update the wallets name
   Future<void> updateName(String name);
@@ -28,7 +34,11 @@ class Wallet implements IWallet {
     required this.name,
     required this.privKey,
     required this.pubKey,
+    // required this.privKeyPair,
   });
+
+  // @override
+  // Uint8List privKeyPair;
 
   @override
   String mneumonic;
@@ -72,11 +82,13 @@ class Wallet implements IWallet {
   }
 
   factory Wallet.fromSnapshot(Map<String, dynamic> doc) {
+    print(doc['priv_key_array']);
     return Wallet(
       mneumonic: doc['mneumonic'],
       name: doc['name'],
       privKey: doc['priv_key'],
       pubKey: doc['pub_key'],
+      // privKeyPair: doc['priv_key_array'],
     );
   }
 }

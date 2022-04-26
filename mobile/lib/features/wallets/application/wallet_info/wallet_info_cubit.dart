@@ -1,16 +1,30 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:mobile/features/wallets/infrastructure.dart/wallet_info_repository.dart';
 
 part 'wallet_info_state.dart';
 
 class WalletInfoCubit extends Cubit<WalletInfoState> {
-  WalletInfoCubit() : super(const WalletInfoState(status: WalletInfoStatus.initial));
+  WalletInfoCubit(this.walletInfoRepository) : super(const WalletInfoState(status: WalletInfoStatus.initial));
+
+  final WalletInfoRepository walletInfoRepository;
 
   Future<void> fetchBalance(String pubKey) async {
     emit(const WalletInfoState(status: WalletInfoStatus.loading));
-    await Future.delayed(const Duration(seconds: 1)).then((value) {
-      emit(const WalletInfoState(status: WalletInfoStatus.success, balance: 1.01));
-    });
+    final balance = await walletInfoRepository.checkBalance(pubKey);
+    balance.fold(
+      (l) => emit(
+        WalletInfoState(
+          status: WalletInfoStatus.success,
+          balance: l,
+        ),
+      ),
+      (r) => emit(
+        const WalletInfoState(
+          status: WalletInfoStatus.failure,
+        ),
+      ),
+    );
   }
 
   void reset() {

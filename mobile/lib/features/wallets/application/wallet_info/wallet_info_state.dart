@@ -6,9 +6,9 @@ enum WalletInfoStatus { initial, loading, failure, success }
 class WalletInfoState {
   const WalletInfoState({
     required this.status,
-    this.balance = 0.0,
+    this.balance = '0',
   });
 
-  final double balance;
+  final String balance;
   final WalletInfoStatus status;
 }

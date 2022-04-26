@@ -60,9 +60,9 @@ class _WalletInfoState extends State<WalletInfo> {
                 ),
               ),
               const SizedBox(height: 20),
-              const Text(
-                '\$0.00',
-                style: TextStyle(
+              Text(
+                '${state.balance} SOL',
+                style: const TextStyle(
                   fontSize: 40,
                   color: Colors.amber,
                 ),
