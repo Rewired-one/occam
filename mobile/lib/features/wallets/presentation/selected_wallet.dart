@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/wallets/application/wallets/wallets_cubit.dart';
+import 'package:mobile/features/wallets/presentation/setup_wallet.dart';
 import 'package:mobile/features/wallets/presentation/wallet_info.dart';
 
 class SelectedWallet extends StatefulWidget {
@@ -54,7 +55,12 @@ class _SelectedWalletState extends State<SelectedWallet> {
             ),
           );
         }
-        if (state.wallets.isEmpty) {
+        if (state.status == WalletsStatus.setup) {
+          return SetupWalletScreen();
+        }
+        if (state.wallets.isNotEmpty && state.status == WalletsStatus.success) {
+          return WalletInfo(wallet: state.selectedWallet!);
+        } else {
           return const SizedBox(
             width: double.infinity,
             height: double.infinity,
@@ -62,8 +68,6 @@ class _SelectedWalletState extends State<SelectedWallet> {
               child: Text('Setup your First Wallet!'),
             ),
           );
-        } else {
-          return WalletInfo(wallet: state.selectedWallet!);
         }
       },
     );

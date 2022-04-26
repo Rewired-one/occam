@@ -1,6 +1,10 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:http/http.dart' as http;
 
 import 'package:mobile/features/wallets/domain/wallet.dart';
 import 'package:mobile/features/wallets/domain/i_wallet_facade.dart';
@@ -9,8 +13,7 @@ class WalletRepository extends IWalletFacade {
   @override
   Future<Either<List<Wallet>, Unit>> fetchWallets() async {
     try {
-      final email = FirebaseAuth.instance.currentUser?.email;
-      final data = await FirebaseFirestore.instance.collection('wallets').doc(email).get();
+      final data = await FirebaseFirestore.instance.collection('wallets').doc(userEmail).get();
 
       if (data.exists) {
         final List<Wallet> wallets =
@@ -27,8 +30,23 @@ class WalletRepository extends IWalletFacade {
   }
 
   @override
-  Future<Either<Wallet, Unit>> createNewWallet({required String displayName}) {
-    // TODO: implement createNewWallet
-    throw UnimplementedError();
+  Future<Either<Wallet, Unit>> createNewWallet({required String displayName}) async {
+    try {
+      final Uri uri = Uri.parse('http://localhost:3000/createWallet');
+      final response = await http.post(uri, body: {
+        'userId': userEmail,
+        'name': displayName,
+      });
+      if (response.statusCode == 200) {
+        final parsed = jsonDecode(response.body);
+        final wallet = Wallet.fromSnapshot(parsed);
+        print(inspect(wallet));
+        return left(wallet);
+      } else {
+        throw Exception('Error with request');
+      }
+    } catch (error) {
+      return right(unit);
+    }
   }
 }

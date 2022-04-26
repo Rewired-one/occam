@@ -1,6 +1,6 @@
 part of 'wallets_cubit.dart';
 
-enum WalletsStatus { initial, loading, success, failure }
+enum WalletsStatus { initial, loading, success, failure, setup }
 
 @immutable
 class WalletsState {

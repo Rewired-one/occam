@@ -33,6 +33,29 @@ class WalletsCubit extends Cubit<WalletsState> {
     );
   }
 
+  Future<void> createNewWallet(String displayName) async {
+    emit(WalletsState(status: WalletsStatus.loading, wallets: state.wallets));
+    final wallet = await walletRepository.createNewWallet(displayName: displayName);
+    wallet.fold(
+      (l) => emit(
+        WalletsState(
+          status: WalletsStatus.success,
+          selectedWallet: l,
+          wallets: [...state.wallets, l],
+        ),
+      ),
+      (r) => const WalletsState(
+        status: WalletsStatus.failure,
+      ),
+    );
+  }
+
+  void setupNewWallet() {
+    emit(
+      const WalletsState(status: WalletsStatus.setup),
+    );
+  }
+
   void selectWallet(int index) {
     emit(
       WalletsState(

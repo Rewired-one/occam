@@ -3,20 +3,17 @@
 import 'package:flutter/material.dart';
 
 class Input extends StatelessWidget {
-  const Input({
-    required this.labelText,
-    this.hintText,
-    this.onChange,
-    this.validator,
-  });
+  const Input({required this.labelText, this.hintText, this.onChange, this.validator, this.controller});
   final String labelText;
   final String? hintText;
   final Function(String?)? onChange;
   final String? Function(String?)? validator;
+  final TextEditingController? controller;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      controller: controller,
       style: const TextStyle(
         color: Colors.greenAccent,
       ),

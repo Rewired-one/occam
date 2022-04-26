@@ -127,9 +127,8 @@ class _WalletsMenuState extends State<WalletsMenu> {
                   leading: const Icon(Icons.add),
                   title: const Text('Add / Connect Wallet'),
                   onTap: () {
-                    // Create and store a new wallet
-                    // Emit this new wallet
-                    // Display Wallet Info Screen
+                    context.read<WalletsCubit>().setupNewWallet();
+                    Navigator.pop(context);
                   },
                 ),
                 const Divider(),
