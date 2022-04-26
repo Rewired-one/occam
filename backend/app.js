@@ -52,8 +52,12 @@ app.post('/createWallet', (req, res) => {
         if (error !== null) {
             console.log(`exec error: ${error}`);
         }
+
+        res.send({
+            ...data   
+        });
     })
-    res.send({});
+    
 })
 
 app.get('/createUser', (req, res) => {
