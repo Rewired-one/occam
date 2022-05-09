@@ -69,8 +69,11 @@ class AuthRepository implements IAuthFacade {
         passcode: passcode,
       );
 
+      await FirebaseFirestore.instance.collection('users').doc(email).set(appUser.toMap());
+
       return right(appUser);
     } on FirebaseAuthException catch (error) {
+      print('ERROR: $error');
       return left(GenericAuthError(error.message!));
     }
   }

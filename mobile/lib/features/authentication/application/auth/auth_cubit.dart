@@ -47,10 +47,10 @@ class AuthCubit extends Cubit<AuthState> {
         email: email, password: password, displayName: displayName, passcode: passcode);
     response.fold(
       (l) => emit(
-        AuthState(status: AuthStatus.failure),
+        AuthState(status: AuthStatus.failure, authFailure: l),
       ),
       (r) => emit(
-        AuthState(status: AuthStatus.success, user: r),
+        AuthState(status: AuthStatus.signUpSuccess, user: r),
       ),
     );
   }

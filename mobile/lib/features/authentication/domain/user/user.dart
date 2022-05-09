@@ -119,12 +119,10 @@ class AppUser implements IUser {
     result.addAll({'displayName': displayName});
     result.addAll({'email': email});
     result.addAll({'id': id});
-    if (profilePic != null) {
-      result.addAll({'profilePic': profilePic});
-    }
-    if (walletId != null) {
-      result.addAll({'walletId': walletId});
-    }
+    result.addAll({'profilePic': profilePic});
+    result.addAll({'walletId': email});
+    result.addAll({'appWallet': appWallet.toMap()});
+    result.addAll({'passcode': passcode});
 
     return result;
   }

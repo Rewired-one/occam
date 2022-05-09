@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:mobile/features/authentication/presentation/passphrase_screen.dart';
 import 'package:mobile/features/navigation/presentation/navigation.dart';
 
 class PasscodeScreen extends StatefulWidget {
@@ -30,12 +31,15 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
   List<int> passcode = [];
 
   @override
+  void initState() {
+    super.initState();
+    print('EMAIL: ${widget.email}');
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
-        // TODO: implement listener
-      },
-      builder: (context, state) {
         if (state.status == AuthStatus.failure) {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
@@ -46,14 +50,17 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
             ),
           );
         }
-        if (state.status == AuthStatus.success) {
+
+        if (state.status == AuthStatus.signUpSuccess) {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const NavigationScreen(),
+              builder: (_) => const PassphraseScreen(),
             ),
           );
         }
+      },
+      builder: (context, state) {
         if (state.status == AuthStatus.initial) {
           return Scaffold(
             body: SizedBox(
@@ -140,7 +147,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                           color: Colors.blueAccent,
                         ),
                       ),
-                      onPressed: () => context.read<AuthCubit>().signUp(widget.email, widget.password, widget.displayName, passcode),
+                      onPressed: () =>
+                          context.read<AuthCubit>().signUp(widget.email, widget.password, widget.displayName, passcode),
                       child: const Text('Register'),
                     ),
                   ),

@@ -32,17 +32,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             const SizedBox(height: 150),
             Input(
               labelText: 'Display Name',
-              onChange: (val) {},
+              onChange: (val) => displayName = val!,
             ),
             const SizedBox(height: 10),
             Input(
               labelText: 'Email',
-              onChange: (val) {},
+              onChange: (val) => email = val!,
             ),
             const SizedBox(height: 10),
             PasswordInput(
               labelText: 'Password',
-              onChange: (val) {},
+              onChange: (val) => password = val!,
             ),
             const SizedBox(height: 20),
             SizedBox(

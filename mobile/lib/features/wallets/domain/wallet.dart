@@ -76,6 +76,14 @@ class Wallet implements IWallet {
     return 'Wallet(mneumonic: $mneumonic, name: $name, privKey: $privKey, pubKey: $pubKey)';
   }
 
+  Map<String, dynamic> toMap() {
+    final result = <String, dynamic>{};
+
+    result.addAll({'mneumonic': mneumonic, 'name': name, 'privKey': privKey, 'pubKey': pubKey});
+
+    return result;
+  }
+
   factory Wallet.fromSnapshot(Map<String, dynamic> doc) {
     return Wallet(
       mneumonic: doc['mneumonic'],
