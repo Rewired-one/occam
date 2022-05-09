@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mobile/features/authentication/domain/auth/auth_failure.dart';
 import 'package:mobile/features/authentication/domain/auth/i_auth_facade.dart';
 import 'package:mobile/features/authentication/domain/user/user.dart';
+import 'package:mobile/features/wallets/domain/wallet.dart';
 
 class AuthRepository implements IAuthFacade {
   @override
@@ -45,11 +46,28 @@ class AuthRepository implements IAuthFacade {
   }
 
   @override
-  Future<Either<AuthFailure, Unit>> signUpWithEmailAndPassword(
-      {required String email, required String password}) async {
+  Future<Either<AuthFailure, AppUser>> signUpWithEmailAndPassword({
+    required String email,
+    required String password,
+    required String displayName,
+  }) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-      return right(unit);
+      // Create Wallet from Backend
+      // Create a settings folder. Add Doc ID to User
+      // Upload with User
+      final appUser = AppUser(
+          appSettingsId: '',
+          displayName: displayName,
+          appWallet: Wallet(
+            mneumonic: '',
+            name: 'name',
+            privKey: 'privKey',
+            pubKey: 'pubKey',
+          ),
+          email: email,
+          id: email);
+      return right(appUser);
     } on FirebaseAuthException catch (error) {
       return left(GenericAuthError(error.message!));
     }

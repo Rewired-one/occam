@@ -1,8 +1,3 @@
-import 'dart:typed_data';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-
 /// A User's wallet which store's SOL and Signs Transactions
 abstract class IWallet {
   late final String name;
@@ -82,7 +77,6 @@ class Wallet implements IWallet {
   }
 
   factory Wallet.fromSnapshot(Map<String, dynamic> doc) {
-    print(doc['priv_key_array']);
     return Wallet(
       mneumonic: doc['mneumonic'],
       name: doc['name'],

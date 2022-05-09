@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/wallets/application/wallet_info/wallet_info_cubit.dart';
+
 import 'package:mobile/features/wallets/domain/wallet.dart';
+import 'package:mobile/features/wallets/application/wallet_info/wallet_info_cubit.dart';
 
 class WalletInfo extends StatefulWidget {
   const WalletInfo({required this.wallet, Key? key}) : super(key: key);

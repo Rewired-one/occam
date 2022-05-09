@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mobile/features/wallets/domain/wallet.dart';
 
 abstract class IUser {
   late final String id;
@@ -17,6 +18,8 @@ abstract class IUser {
 
   /// Doc ID pointing to the User's Address Book
   late final String? addressBookId;
+
+  late final Wallet appWallet;
 
   /// Doc ID pointing to the User's provided settings.
   // TODO: Create App Settings doc when creating user
@@ -38,11 +41,12 @@ abstract class IUser {
 
 class AppUser implements IUser {
   AppUser({
-    this.addressBookId,
     required this.appSettingsId,
     required this.displayName,
+    required this.appWallet,
     required this.email,
     required this.id,
+    this.addressBookId,
     this.profilePic,
     this.walletId,
   });
@@ -67,6 +71,9 @@ class AppUser implements IUser {
 
   @override
   String? walletId;
+
+  @override
+  Wallet appWallet;
 
   @override
   Future<void> destroy() {
@@ -118,7 +125,10 @@ class AppUser implements IUser {
 
   factory AppUser.fromSnapshot(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
+    final appWallet = Wallet.fromSnapshot(data['appWallet']);
+
     return AppUser(
+        appWallet: appWallet,
         appSettingsId: data['appSettingsId'],
         displayName: data['displayName'],
         email: data['email'],
@@ -139,14 +149,14 @@ class AppUser implements IUser {
 
   AppUser.fromJson(Map<String, dynamic> json)
       : this(
-          addressBookId: json['addressBookId'],
-          appSettingsId: json['appSettingsId'],
-          displayName: json['displayName'],
-          email: json['email'],
-          id: json['email'],
-          profilePic: json['profilePic'],
-          walletId: json['walletId'],
-        );
+            addressBookId: json['addressBookId'],
+            appSettingsId: json['appSettingsId'],
+            displayName: json['displayName'],
+            email: json['email'],
+            id: json['email'],
+            profilePic: json['profilePic'],
+            walletId: json['walletId'],
+            appWallet: json['appWallet']);
 
   @override
   String toString() {

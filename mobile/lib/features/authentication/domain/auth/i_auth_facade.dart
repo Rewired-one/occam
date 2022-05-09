@@ -6,9 +6,10 @@ import 'package:mobile/features/authentication/domain/user/user.dart';
 abstract class IAuthFacade {
   Future<AppUser> fetchUserFromFirebase(String email);
   Future<Either<FailedToCreateUser, AppUser>> createNewUser();
-  Future<Either<AuthFailure, Unit>> signUpWithEmailAndPassword({
+  Future<Either<AuthFailure, AppUser>> signUpWithEmailAndPassword({
     required String email,
     required String password,
+    required String displayName,
   });
   Future<Either<AuthFailure, AppUser>> signInWithEmailAndPassword({
     required String email,

@@ -21,7 +21,7 @@ class WalletsCubit extends Cubit<WalletsState> {
           WalletsState(
             status: WalletsStatus.success,
             wallets: l,
-            selectedWallet: l[0],
+            selectedWallet: l.isEmpty ? null : l[0],
           ),
         );
       },
