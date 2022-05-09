@@ -42,13 +42,13 @@ app.post('/createWallet', (req, res) => {
                 name: name
             };
 
-            const db = getFirestore();
+            if(userId) {
+                const db = getFirestore();
 
-            db.collection('wallets').doc(userId).update({
-                wallets: FieldValue.arrayUnion(data)
-            })
-
-
+                db.collection('wallets').doc(userId).update({
+                    wallets: FieldValue.arrayUnion(data)
+                })
+            }
 
             if (error !== null) {
                 console.log(`exec error: ${error}`);
