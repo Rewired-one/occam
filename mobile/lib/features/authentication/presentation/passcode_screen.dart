@@ -27,7 +27,7 @@ const numberPad = [
 ];
 
 class _PasscodeScreenState extends State<PasscodeScreen> {
-  List<int> pin = [];
+  List<int> passcode = [];
 
   @override
   Widget build(BuildContext context) {
@@ -78,7 +78,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                       SizedBox(
                         width: 55,
                         child: Text(
-                          pin.join(''),
+                          passcode.join(''),
                           style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.normal,
@@ -89,8 +89,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                         child: IconButton(
                           icon: Icon(Icons.backspace, color: Colors.red[600]),
                           onPressed: () => setState(() {
-                            if (pin.isNotEmpty) {
-                              pin.removeLast();
+                            if (passcode.isNotEmpty) {
+                              passcode.removeLast();
                             }
                           }),
                         ),
@@ -112,8 +112,8 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                                 padding: const EdgeInsets.all(15),
                               ),
                               onPressed: () => setState(() {
-                                if (pin.length < 4) {
-                                  pin.add(number);
+                                if (passcode.length < 4) {
+                                  passcode.add(number);
                                 }
                               }),
                               child: Text(
@@ -140,7 +140,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
                           color: Colors.blueAccent,
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () => context.read<AuthCubit>().signUp(widget.email, widget.password, widget.displayName, passcode),
                       child: const Text('Register'),
                     ),
                   ),
