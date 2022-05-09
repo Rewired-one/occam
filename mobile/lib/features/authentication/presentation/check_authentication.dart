@@ -40,11 +40,12 @@ class _CheckAuthenticationState extends State<CheckAuthentication> {
         if (state.user == null) {
           return const Scaffold(
             body: SizedBox(
-                width: double.infinity,
-                height: double.infinity,
-                child: Center(
-                  child: CircularProgressIndicator(),
-                )),
+              width: double.infinity,
+              height: double.infinity,
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
           );
         }
         return const NavigationScreen();

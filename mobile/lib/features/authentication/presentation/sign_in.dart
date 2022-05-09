@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/authentication/presentation/sign_up.dart';
 
 import 'package:mobile/widgets/input.dart';
 import 'package:mobile/widgets/password_input.dart';
@@ -82,6 +83,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   labelText: 'Password',
                   onChange: (val) => password = val!,
                 ),
+                if (state.status == AuthStatus.failure) Text(state.authFailure!.message),
                 const SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
@@ -99,8 +101,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     child: const Text('Enter'),
                   ),
                 ),
-                const SizedBox(height: 20),
-                if (state.status == AuthStatus.failure) Text(state.authFailure!.message),
+                const SizedBox(height: 10),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: TextButton(
+                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen())),
+                    child: const Text('Register New Wallet'),
+                  ),
+                ),
               ],
             ),
           );

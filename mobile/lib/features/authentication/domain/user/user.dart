@@ -19,11 +19,13 @@ abstract class IUser {
   /// Doc ID pointing to the User's Address Book
   late final String? addressBookId;
 
-  late final Wallet appWallet;
-
   /// Doc ID pointing to the User's provided settings.
   // TODO: Create App Settings doc when creating user
   late final String appSettingsId;
+
+  late final List<int> passcode;
+
+  late final Wallet appWallet;
 
   /// Update the user's displayName
   Future<void> updateDisplayName(String newName);
@@ -46,6 +48,7 @@ class AppUser implements IUser {
     required this.appWallet,
     required this.email,
     required this.id,
+    required this.passcode,
     this.addressBookId,
     this.profilePic,
     this.walletId,
@@ -74,6 +77,9 @@ class AppUser implements IUser {
 
   @override
   Wallet appWallet;
+
+  @override
+  List<int> passcode;
 
   @override
   Future<void> destroy() {
@@ -135,7 +141,8 @@ class AppUser implements IUser {
         id: doc.id,
         addressBookId: doc['addressBookId'],
         profilePic: doc['profilePic'],
-        walletId: doc['walletId']);
+        walletId: doc['walletId'],
+        passcode: doc['passcode']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -146,17 +153,6 @@ class AppUser implements IUser {
         'profilePic': profilePic,
         'walletId': walletId,
       };
-
-  AppUser.fromJson(Map<String, dynamic> json)
-      : this(
-            addressBookId: json['addressBookId'],
-            appSettingsId: json['appSettingsId'],
-            displayName: json['displayName'],
-            email: json['email'],
-            id: json['email'],
-            profilePic: json['profilePic'],
-            walletId: json['walletId'],
-            appWallet: json['appWallet']);
 
   @override
   String toString() {
