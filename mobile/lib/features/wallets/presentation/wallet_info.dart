@@ -76,9 +76,26 @@ class _WalletInfoState extends State<WalletInfo> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Icon(Icons.menu),
-                    Text('Testnet'),
-                    Icon(Icons.qr_code),
+                    const Icon(Icons.menu),
+                    DropdownButton(
+                      value: 0,
+                      items: const [
+                        DropdownMenuItem<int>(
+                          value: 0,
+                          child: Text('Testnet'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 1,
+                          child: Text('Devnet'),
+                        ),
+                        DropdownMenuItem<int>(
+                          value: 2,
+                          child: Text('Mainnet'),
+                        ),
+                      ],
+                      onChanged: (val) {},
+                    ),
+                    const Icon(Icons.qr_code),
                   ],
                 ),
               ),
