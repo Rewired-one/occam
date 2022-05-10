@@ -115,8 +115,12 @@ class RecoveryPhraseScreen extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
                 ),
-                onPressed: () =>
-                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const NavigationScreen())),
+                onPressed: () => Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const NavigationScreen(),
+                  ),
+                ),
                 child: const Text(
                   'Continue',
                   style: TextStyle(
