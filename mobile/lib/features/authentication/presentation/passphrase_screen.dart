@@ -15,7 +15,7 @@ class PassphraseScreen extends StatelessWidget {
         child: Column(
           children: [
             SafeArea(child: SizedBox.shrink()),
-            Text('Passphrase screen'),
+            Text('Recovery Phrase'),
           ],
         ),
       ),

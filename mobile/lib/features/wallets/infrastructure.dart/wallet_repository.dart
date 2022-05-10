@@ -13,7 +13,7 @@ class WalletRepository extends IWalletFacade {
   Future<Either<List<Wallet>, Unit>> fetchWallets() async {
     try {
       final data = await FirebaseFirestore.instance.collection('wallets').doc(userEmail).get();
-
+      print(data.data());
       if (data.exists) {
         final List<Wallet> wallets =
             data.data()!['wallets'].map((wallet) => Wallet.fromSnapshot(wallet)).toList().cast<Wallet>();

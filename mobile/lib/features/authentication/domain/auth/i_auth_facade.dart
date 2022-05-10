@@ -10,7 +10,7 @@ abstract class IAuthFacade {
     required String email,
     required String password,
     required String displayName,
-    required List<int> passcode,
+    required List<dynamic> passcode,
   });
   Future<Either<AuthFailure, AppUser>> signInWithEmailAndPassword({
     required String email,

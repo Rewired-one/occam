@@ -48,7 +48,7 @@ class AuthRepository implements IAuthFacade {
     required String email,
     required String password,
     required String displayName,
-    required List<int> passcode,
+    required List<dynamic> passcode,
   }) async {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
@@ -70,6 +70,8 @@ class AuthRepository implements IAuthFacade {
       );
 
       await FirebaseFirestore.instance.collection('users').doc(email).set(appUser.toMap());
+
+      await FirebaseFirestore.instance.collection('wallets').doc(email).set({'id': email, 'wallets': []});
 
       return right(appUser);
     } on FirebaseAuthException catch (error) {

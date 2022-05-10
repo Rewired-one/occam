@@ -23,7 +23,7 @@ abstract class IUser {
   // TODO: Create App Settings doc when creating user
   late final String appSettingsId;
 
-  late final List<int> passcode;
+  late final List<dynamic> passcode;
 
   late final Wallet appWallet;
 
@@ -79,7 +79,7 @@ class AppUser implements IUser {
   Wallet appWallet;
 
   @override
-  List<int> passcode;
+  List<dynamic> passcode;
 
   @override
   Future<void> destroy() {
@@ -132,15 +132,16 @@ class AppUser implements IUser {
     final appWallet = Wallet.fromSnapshot(data['appWallet']);
 
     return AppUser(
-        appWallet: appWallet,
-        appSettingsId: data['appSettingsId'],
-        displayName: data['displayName'],
-        email: data['email'],
-        id: doc.id,
-        addressBookId: doc['addressBookId'],
-        profilePic: doc['profilePic'],
-        walletId: doc['walletId'],
-        passcode: doc['passcode']);
+      appWallet: appWallet,
+      appSettingsId: data['appSettingsId'],
+      displayName: data['displayName'],
+      email: data['email'],
+      id: doc.id,
+      addressBookId: doc['addressBookId'],
+      profilePic: doc['profilePic'],
+      walletId: doc['walletId'],
+      passcode: doc['passcode'],
+    );
   }
 
   Map<String, dynamic> toJson() => {

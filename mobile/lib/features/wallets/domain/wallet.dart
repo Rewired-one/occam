@@ -79,7 +79,7 @@ class Wallet implements IWallet {
   Map<String, dynamic> toMap() {
     final result = <String, dynamic>{};
 
-    result.addAll({'mneumonic': mneumonic, 'name': name, 'privKey': privKey, 'pubKey': pubKey});
+    result.addAll({'mneumonic': mneumonic, 'name': name, 'priv_key': privKey, 'pub_key': pubKey});
 
     return result;
   }
