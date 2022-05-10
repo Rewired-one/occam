@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:mobile/features/authentication/presentation/sign_in.dart';
 
 import 'package:mobile/features/wallets/domain/wallet.dart';
 import 'package:mobile/features/wallets/application/wallet_info/wallet_info_cubit.dart';
@@ -48,12 +50,38 @@ class _WalletInfoState extends State<WalletInfo> {
           );
         }
 
-        return SizedBox(
+        return Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF1A2827),
+                Color(0xFF0D0D0D),
+                Color(0xFF1F1920),
+              ],
+            ),
+          ),
           height: double.infinity,
           width: double.infinity,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const SafeArea(
+                child: SizedBox.shrink(),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                width: double.infinity,
+                height: 65,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Icon(Icons.menu),
+                    Text('Testnet'),
+                    Icon(Icons.qr_code),
+                  ],
+                ),
+              ),
               Text(
                 widget.wallet.name,
                 style: const TextStyle(

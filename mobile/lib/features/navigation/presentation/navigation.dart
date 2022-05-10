@@ -26,32 +26,6 @@ class _NavigationScreenState extends State<NavigationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text('Occam Wallet'),
-        actions: [
-          const Center(
-            child: Text(
-              'Logout',
-            ),
-          ),
-          IconButton(
-            onPressed: () async {
-              await context.read<AuthCubit>().signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => const SignInScreen(),
-                ),
-              );
-            },
-            icon: const Icon(
-              Icons.logout,
-            ),
-          ),
-        ],
-      ),
-      drawer: const WalletsMenu(),
       body: IndexedStack(
         index: currentIndex,
         children: const [
