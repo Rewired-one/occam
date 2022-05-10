@@ -20,7 +20,6 @@ class _CheckAuthenticationState extends State<CheckAuthentication> {
   void initState() {
     super.initState();
     user = FirebaseAuth.instance.currentUser;
-    context.read<AuthCubit>().signOut();
     // get the user before moving to navigation screen
     if (user != null) {
       context.read<AuthCubit>().fetchUser();

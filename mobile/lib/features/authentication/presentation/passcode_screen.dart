@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
-import 'package:mobile/features/authentication/presentation/passphrase_screen.dart';
+import 'package:mobile/features/authentication/presentation/recovery_phrase_screen.dart';
 import 'package:mobile/features/navigation/presentation/navigation.dart';
 
 class PasscodeScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class _PasscodeScreenState extends State<PasscodeScreen> {
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(
-              builder: (_) => const PassphraseScreen(),
+              builder: (_) => const RecoveryPhraseScreen(),
             ),
           );
         }
