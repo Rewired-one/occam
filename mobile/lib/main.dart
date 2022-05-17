@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/wallets/application/wallet_info/wallet_info_cubit.dart';
-import 'package:mobile/features/wallets/application/wallets/wallets_cubit.dart';
-import 'package:mobile/features/wallets/infrastructure.dart/wallet_info_repository.dart';
-import 'package:mobile/features/wallets/infrastructure.dart/wallet_repository.dart';
-import 'package:mobile/firebase_options.dart';
 
+import 'package:mobile/firebase_options.dart';
+import 'package:mobile/features/wallets/application/wallets/wallets_cubit.dart';
 import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:mobile/features/wallets/infrastructure.dart/wallet_repository.dart';
 import 'package:mobile/features/authentication/infrastructure/auth_repository.dart';
 import 'package:mobile/features/authentication/presentation/check_authentication.dart';
+import 'package:mobile/features/wallets/application/wallet_info/wallet_info_cubit.dart';
+import 'package:mobile/features/wallets/infrastructure.dart/wallet_info_repository.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
