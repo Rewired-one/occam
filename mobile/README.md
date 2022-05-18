@@ -1,3 +1,3 @@
-# Occam Wallet
+# Occam Wallet - Flutter
 
-A Solana Wallet Project 
+A Solana Wallet Project with Flutter Engine
