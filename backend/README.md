@@ -4,4 +4,4 @@ Backend for Occam Wallet
 
 - Express API
 - Firebase Admin for Firebase cloud services
-- Solana CLI
+- Solana CLI scripts for wallet creation and balance checking
