@@ -1,6 +1,6 @@
 part of 'authentication_cubit.dart';
 
-enum AuthStatus { initial, loading, signedIn, needSignUp }
+enum AuthStatus { initial, loading, error, authenticated, userSignIn, userSignUp }
 
 class AuthState {
   AuthState({

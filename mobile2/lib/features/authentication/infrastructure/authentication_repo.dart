@@ -1,7 +1,7 @@
 import 'package:mobile2/features/authentication/domain/i_auth_facade.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AuthenticationRepo implements IAuthFacade {
+class AuthenticationRepository implements IAuthFacade {
   @override
   Future<String?> checkUserHasSignedUp() async {
     final prefs = await SharedPreferences.getInstance();
