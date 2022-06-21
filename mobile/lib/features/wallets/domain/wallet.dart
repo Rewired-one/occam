@@ -85,6 +85,7 @@ class Wallet implements IWallet {
   }
 
   factory Wallet.fromSnapshot(Map<String, dynamic> doc) {
+    print('WALLET DOC: $doc');
     return Wallet(
       mneumonic: doc['mneumonic'],
       name: doc['name'],
