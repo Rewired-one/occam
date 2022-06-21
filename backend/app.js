@@ -20,11 +20,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.post('/createWallet', (req, res) => {
-    const { userId, name } = req.body;
-    exec('sh ./scripts/wallet.sh', (error, stdout, stderr) => {
+app.post('/createNewUser', (req, res) => {
+    exec('sh ./scripts/wallet.sh', async (error, stdout, stderr) => {
 
         try {
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+                throw Error(error)
+            }
+
             const split = stdout.split('\n');
             const mnemonicPhrase = split[5];
 
@@ -34,30 +38,36 @@ app.post('/createWallet', (req, res) => {
             const privKeyBase58String = bs58.encode(keypair.secretKey);
             const pubKey = keypair.publicKey.toBase58();
 
-            const data = {
-                pub_key: pubKey,
-                mneumonic: mnemonicPhrase,
-                priv_key_array: keypair.secretKey,
-                priv_key: privKeyBase58String,
-                name: name
+            const user = {
+                passcode: [],
+                id: `${pubKey}@occam.io`,
             };
 
-            if(userId) {
-                const db = getFirestore();
-
-                db.collection('wallets').doc(userId).update({
-                    wallets: FieldValue.arrayUnion(data)
-                })
+            const wallet = {
+                id: `${pubKey}@occam.io`,
+                wallets: {
+                    master: {
+                        pubKey,
+                        mnemonicPhrase,
+                        privKeyArray: keypair.secretKey,
+                        privKey: privKeyBase58String,
+                    },
+                }
             }
 
-            if (error !== null) {
-                console.log(`exec error: ${error}`);
-                throw Error(error)
-            }
+            const db = getFirestore();
+            const batch = db.batch();
+            const userDocRef = db.collection('users').doc(`${pubKey}@occam.io`);
+            const walletDocRef = db.collection('wallets').doc(`${pubKey}@occam.io`);
+
+            batch.set(userDocRef, user);
+            batch.set(walletDocRef, wallet);
+            await batch.commit();
 
             res.send({
                 success: true,
-                ...data
+                user,
+                wallet
             });
 
         } catch (error) {
@@ -66,18 +76,10 @@ app.post('/createWallet', (req, res) => {
                 error: error
             })
         }
-
         
     })
 
 })
-
-app.get('/createUser', (req, res) => {
-    // TODO: 
-    // [ ] Add User to Firebase
-    // [ ] Create Wallet and Address Book Docs
-    // [ ] Create Settings Doc
-});
 
 app.post('/checkBalance', (req, res) => {
     const { pub_key } = req.body
