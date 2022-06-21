@@ -1,0 +1,39 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile2/features/authentication/application/create_wallet_cubit/create_wallet_cubit.dart';
+
+class CreateWallet extends StatefulWidget {
+  const CreateWallet({Key? key}) : super(key: key);
+
+  @override
+  State<CreateWallet> createState() => _CreateWalletState();
+}
+
+class _CreateWalletState extends State<CreateWallet> {
+  @override
+  void initState() {
+    context.read<CreateWalletCubit>();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocConsumer<CreateWalletCubit, CreateWalletState>(
+      listener: (context, state) {},
+      builder: (context, state) {
+        switch (state.status) {
+          case CreateWalletStatus.initial:
+            return Container();
+          case CreateWalletStatus.loading:
+            return Container();
+          case CreateWalletStatus.error:
+            return Container();
+          case CreateWalletStatus.recoveryPhrase:
+            return Container();
+          case CreateWalletStatus.setPassword:
+            return Container();
+        }
+      },
+    );
+  }
+}
