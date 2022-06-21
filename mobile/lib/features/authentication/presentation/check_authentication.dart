@@ -31,7 +31,7 @@ class _CheckAuthenticationState extends State<CheckAuthentication> {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {},
       builder: (context, state) {
-        // User is not logged in
+        // User is not logged in!
         if (user == null) {
           return const SignInScreen();
         }
