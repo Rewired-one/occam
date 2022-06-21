@@ -6,9 +6,13 @@ enum CreateWalletStatus { initial, loading, error, recoveryPhrase, setPassword }
 class CreateWalletState {
   const CreateWalletState({
     required this.status,
+    this.recoveryCode,
+    this.appUser,
   });
 
   final CreateWalletStatus status;
+  final String? recoveryCode;
+  final AppUser? appUser;
 
   @override
   bool operator ==(Object other) {

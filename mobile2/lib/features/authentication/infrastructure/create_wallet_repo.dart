@@ -1,19 +1,22 @@
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile2/features/authentication/domain/i_create_wallet_facade.dart';
-import 'package:mobile2/features/authentication/domain/user.dart';
+import 'package:mobile2/features/authentication/domain/app_user.dart';
+import 'package:mobile2/features/authentication/domain/wallet.dart';
 
 class CreateWalletRepository implements ICreateWalletFacade {
   @override
-  Future<User?> createNewWallet() async {
+  Future<AppUser?> createNewWallet() async {
     try {
       final Uri uri = Uri.parse('http://localhost:3000/createNewUser');
       final response = await http.post(uri);
 
       if (response.statusCode == 200) {
         final responseData = jsonDecode(response.body);
-        final user = User.fromJson(responseData['user']);
+        final user = AppUser.fromJson(responseData['user']);
         return user;
       } else {
         throw Exception('Error with request');
@@ -24,8 +27,16 @@ class CreateWalletRepository implements ICreateWalletFacade {
   }
 
   @override
-  Future<void> registerWalletWithPassword() {
-    // TODO: implement registerWalletWithPassword
-    throw UnimplementedError();
+  Future<void> registerWalletWithPassword(String email, String password) async {
+    final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+  }
+
+  @override
+  Future<Wallet> fetchWallet(String id) async {
+    final response = await FirebaseFirestore.instance.collection('wallets').doc(id).get();
+    final walletData = response.data();
+    print('WALLET DATA: $walletData');
+    final wallet = Wallet.fromJson(walletData!['wallets']['master']);
+    return wallet;
   }
 }

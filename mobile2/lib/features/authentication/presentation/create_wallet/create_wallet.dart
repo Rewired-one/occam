@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile2/features/authentication/application/create_wallet_cubit/create_wallet_cubit.dart';
+import 'package:mobile2/features/authentication/presentation/create_wallet/recovery_phrase.dart';
 
 class CreateWallet extends StatefulWidget {
   const CreateWallet({Key? key}) : super(key: key);
@@ -12,7 +13,7 @@ class CreateWallet extends StatefulWidget {
 class _CreateWalletState extends State<CreateWallet> {
   @override
   void initState() {
-    context.read<CreateWalletCubit>();
+    context.read<CreateWalletCubit>().init();
     super.initState();
   }
 
@@ -23,13 +24,19 @@ class _CreateWalletState extends State<CreateWallet> {
       builder: (context, state) {
         switch (state.status) {
           case CreateWalletStatus.initial:
-            return Container();
+            return const Scaffold();
           case CreateWalletStatus.loading:
-            return Container();
+            return const Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFCB4EE8)),
+                ),
+              ),
+            );
           case CreateWalletStatus.error:
             return Container();
           case CreateWalletStatus.recoveryPhrase:
-            return Container();
+            return const RecoveryPhraseScreen();
           case CreateWalletStatus.setPassword:
             return Container();
         }

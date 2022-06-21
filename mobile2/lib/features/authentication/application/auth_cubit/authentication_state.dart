@@ -6,9 +6,11 @@ enum AuthStatus { initial, loading, error, authenticated, userSignIn, userSignUp
 class AuthState {
   const AuthState({
     required this.status,
+    this.appUser,
   });
 
   final AuthStatus status;
+  final AppUser? appUser;
 
   @override
   bool operator ==(Object other) {

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user.g.dart';
+part 'app_user.g.dart';
 
 @JsonSerializable()
 @immutable
-class User {
-  const User({
+class AppUser {
+  const AppUser({
     required this.id,
     required this.passcode,
   });
@@ -16,19 +16,19 @@ class User {
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`
   /// factory.
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  Map<String, dynamic> toJson() => _$AppUserToJson(this);
 
   @override
-  String toString() => 'User(id: $id, passcode: $passcode)';
+  String toString() => 'AppUser(id: $id, passcode: $passcode)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is User && other.id == id && other.passcode == passcode;
+    return other is AppUser && other.id == id && other.passcode == passcode;
   }
 
   @override
