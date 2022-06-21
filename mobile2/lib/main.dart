@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobile2/features/authentication/presentation/check_authentication.dart';
 import 'package:mobile2/features/authentication/presentation/sign_in.dart';
-import 'package:mobile2/features/authentication/presentation/sign_out.dart';
+import 'package:mobile2/features/authentication/presentation/sign_up.dart';
 import 'package:mobile2/firebase_options.dart';
 
 void main() async {
@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Occam Wallet',
       theme: ThemeData.dark(),
       routes: {
-        '/': (context) => const CheckAuthentication(),
+        '/': (context) => const SignUpScreen(),
         '/sign_in': (context) => const SignInScreen(),
         '/sign_up': (context) => const SignUpScreen(),
       },
