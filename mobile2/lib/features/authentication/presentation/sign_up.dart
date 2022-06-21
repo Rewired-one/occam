@@ -62,7 +62,8 @@ class SignUpScreen extends StatelessWidget {
                       SizedBox(
                         width: double.infinity,
                         child: MaterialButton(
-                          onPressed: () {},
+                          onPressed: () =>
+                              Navigator.of(context).pushNamedAndRemoveUntil('/create_wallet', (route) => false),
                           color: const Color.fromRGBO(99, 99, 99, 0.1),
                           textColor: const Color(0xFFCB4EE8),
                           elevation: 0,

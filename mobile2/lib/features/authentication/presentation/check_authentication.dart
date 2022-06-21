@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
-import 'package:mobile2/features/authentication/presentation/sign_in.dart';
 import 'package:mobile2/features/authentication/presentation/sign_up.dart';
 
 import 'package:mobile2/features/authentication/presentation/splash_screen.dart';
