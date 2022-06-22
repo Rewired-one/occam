@@ -8,6 +8,7 @@ import 'package:mobile2/features/authentication/infrastructure/authentication_re
 import 'package:mobile2/features/authentication/infrastructure/create_wallet_repo.dart';
 import 'package:mobile2/features/authentication/presentation/check_authentication.dart';
 import 'package:mobile2/features/authentication/presentation/create_wallet/create_wallet.dart';
+import 'package:mobile2/features/authentication/presentation/create_wallet/password.dart';
 import 'package:mobile2/features/authentication/presentation/sign_in.dart';
 import 'package:mobile2/features/authentication/presentation/sign_up.dart';
 import 'package:mobile2/firebase_options.dart';
@@ -44,7 +45,8 @@ class MyApp extends StatelessWidget {
           '/': (context) => const CheckAuthentication(),
           '/sign_in': (context) => const SignInScreen(),
           '/sign_up': (context) => const SignUpScreen(),
-          '/create_wallet': (context) => const CreateWallet()
+          '/create_wallet': (context) => const CreateWallet(),
+          '/create_password': ((context) => const CreatePasswordScreen())
         },
       ),
     );
