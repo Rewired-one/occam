@@ -37,7 +37,7 @@ class _CreateWalletState extends State<CreateWallet> {
             return Container();
           case CreateWalletStatus.recoveryPhrase:
             return const RecoveryPhraseScreen();
-          case CreateWalletStatus.setPassword:
+          case CreateWalletStatus.setPasswordSuccess:
             return Container();
         }
       },

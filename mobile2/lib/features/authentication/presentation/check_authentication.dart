@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
+import 'package:mobile2/features/authentication/presentation/sign_in.dart';
 import 'package:mobile2/features/authentication/presentation/sign_up.dart';
 
 import 'package:mobile2/features/authentication/presentation/splash_screen.dart';
+import 'package:mobile2/features/main_navigation/presentation/main_navigation.dart';
 
 class CheckAuthentication extends StatefulWidget {
   const CheckAuthentication({Key? key}) : super(key: key);
@@ -22,24 +24,18 @@ class _CheckAuthenticationState extends State<CheckAuthentication> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AuthenticationCubit, AuthState>(
-      listener: (context, state) {
-        if (state.status == AuthStatus.error) {}
-      },
+      listener: (context, state) {},
       builder: (context, state) {
-        switch (state.status) {
-          case AuthStatus.initial:
-            return const SplashScreen();
-          case AuthStatus.loading:
-            return Container();
-          case AuthStatus.authenticated:
-            return Container();
-          case AuthStatus.userSignIn:
-            return Container();
-          case AuthStatus.userSignUp:
-            return const SignUpScreen();
-          default:
-            return const SplashScreen();
+        if (state.status == AuthStatus.authenticated) {
+          return const MainNavigationScreen();
         }
+        if (state.status == AuthStatus.userSignIn) {
+          return const SignInScreen();
+        }
+        if (state.status == AuthStatus.userSignUp) {
+          return const SignUpScreen();
+        }
+        return const SplashScreen();
       },
     );
   }

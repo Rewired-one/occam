@@ -6,16 +6,34 @@ import 'package:mobile2/features/authentication/infrastructure/authentication_re
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthState> {
-  AuthenticationCubit(this.authenticationRepository) : super(AuthState(status: AuthStatus.initial));
+  AuthenticationCubit(this.authenticationRepository) : super(const AuthState(status: AuthStatus.initial));
   final AuthenticationRepository authenticationRepository;
 
-  void checkUserHasSignedUp() async {
+  Future<void> checkUserHasSignedUp() async {
     await Future.delayed(const Duration(seconds: 3));
     final user = await authenticationRepository.checkUserHasSignedUp();
     if (user != null) {
-      emit(AuthState(status: AuthStatus.userSignIn));
+      emit(const AuthState(status: AuthStatus.userSignIn));
     } else {
-      emit(AuthState(status: AuthStatus.userSignUp));
+      emit(const AuthState(status: AuthStatus.userSignUp));
     }
+  }
+
+  Future<void> signIn(String password) async {
+    emit(const AuthState(status: AuthStatus.userSignIn, cubitLoading: true));
+    final response = await authenticationRepository.signIn(password);
+    response.fold(
+      (l) => emit(
+        AuthState(status: AuthStatus.userSignIn, errorMessage: l),
+      ),
+      (r) => emit(
+        AuthState(status: AuthStatus.authenticated, appUser: r),
+      ),
+    );
+  }
+
+  Future<void> signOut() async {
+    await authenticationRepository.logout();
+    emit(const AuthState(status: AuthStatus.userSignIn));
   }
 }

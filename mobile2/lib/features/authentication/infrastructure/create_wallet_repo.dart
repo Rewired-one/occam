@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile2/features/authentication/domain/i_create_wallet_facade.dart';
@@ -28,11 +29,16 @@ class CreateWalletRepository implements ICreateWalletFacade {
   }
 
   @override
-  Future<void> registerWalletWithPassword(String email, String password) async {
-    final user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setBool('hasSignedUp', true);
-    prefs.setString('userAccount', user.user!.email!);
+  Future<Either<String, Unit>> registerWalletWithPassword(String email, String password) async {
+    try {
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+      final prefs = await SharedPreferences.getInstance();
+      prefs.setBool('hasSignedUp', true);
+      prefs.setString('userAccount', email);
+      return right(unit);
+    } on FirebaseAuthException catch (error) {
+      return left(error.message!);
+    }
   }
 
   @override

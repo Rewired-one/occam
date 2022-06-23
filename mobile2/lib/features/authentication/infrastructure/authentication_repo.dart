@@ -1,3 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mobile2/features/authentication/domain/app_user.dart';
 import 'package:mobile2/features/authentication/domain/i_auth_facade.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -16,12 +20,35 @@ class AuthenticationRepository implements IAuthFacade {
 
   @override
   Future<void> logout() async {
-    // TODO: implement logout
+    try {
+      await FirebaseAuth.instance.signOut();
+    } on FirebaseAuthException catch (error) {
+      print('ERROR ON LOGOUT: ${error.message}');
+    }
   }
 
   @override
-  Future<bool> signIn() async {
-    return false;
+  Future<Either<String, AppUser>> signIn(String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    final email = prefs.getString('userAccount');
+    try {
+      if (email != null) {
+        await FirebaseAuth.instance.signInWithEmailAndPassword(email: email.toLowerCase(), password: password);
+        final response = await FirebaseFirestore.instance.collection('users').doc(email).get();
+        if (response.data() == null) throw Exception('No User Found!');
+        final appUser = AppUser.fromJson(response.data()!);
+        return right(appUser);
+        // emit(AuthState(status: AuthStatus.authenticated, appUser: appUser));
+      } else {
+        throw Exception('No Email Stored on Shared Preferences!');
+      }
+    } on FirebaseAuthException catch (error) {
+      return left(error.message!);
+      // emit(AuthState(status: AuthStatus.userSignIn, errorMessage: error.message));
+    } on Exception catch (error) {
+      return left(error.toString());
+      // emit(AuthState(status: AuthStatus.userSignIn, errorMessage: error.toString()));
+    }
   }
 
   @override

@@ -11,6 +11,7 @@ import 'package:mobile2/features/authentication/presentation/create_wallet/creat
 import 'package:mobile2/features/authentication/presentation/create_wallet/password.dart';
 import 'package:mobile2/features/authentication/presentation/sign_in.dart';
 import 'package:mobile2/features/authentication/presentation/sign_up.dart';
+import 'package:mobile2/features/main_navigation/presentation/main_navigation.dart';
 import 'package:mobile2/firebase_options.dart';
 
 void main() async {
@@ -43,10 +44,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark(),
         routes: {
           '/': (context) => const CheckAuthentication(),
-          '/sign_in': (context) => const SignInScreen(),
+          '/sign_in': (context) => SignInScreen(),
           '/sign_up': (context) => const SignUpScreen(),
           '/create_wallet': (context) => const CreateWallet(),
-          '/create_password': ((context) => CreatePasswordScreen())
+          '/create_password': ((context) => const CreatePasswordScreen()),
+          '/main': ((context) => const MainNavigationScreen())
         },
       ),
     );

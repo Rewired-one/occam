@@ -14,11 +14,8 @@ class AppUser {
   final String id;
   final Iterable<int> passcode;
 
-  /// Connect the generated [_$PersonFromJson] function to the `fromJson`
-  /// factory.
   factory AppUser.fromJson(Map<String, dynamic> json) => _$AppUserFromJson(json);
 
-  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$AppUserToJson(this);
 
   @override
