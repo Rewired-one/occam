@@ -6,6 +6,7 @@ import 'package:iconify_flutter/icons/ic.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:iconify_flutter/icons/fa6_solid.dart';
 import 'package:mobile2/constants/colors.dart';
+import 'package:mobile2/features/main_navigation/presentation/occam/balance.dart';
 import 'package:mobile2/features/main_navigation/presentation/second_navigation.dart';
 
 class MainNavigationScreen extends StatelessWidget {
@@ -26,14 +27,9 @@ class MainNavigationScreen extends StatelessWidget {
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
                 colors: [
-                  Color(0xFF212121),
-                  Color(0xFF171717),
-                  Color(0xFF212121),
-                ],
-                stops: [
-                  0,
-                  56.25,
-                  100,
+                  Color(0xFF1A2827),
+                  Color(0xFF0D0D0D),
+                  Color(0xFF1F1920),
                 ],
               ),
             ),
@@ -49,9 +45,7 @@ class MainNavigationScreen extends StatelessWidget {
                           Center(
                             child: Text('Airdrop Screen'),
                           ),
-                          Center(
-                            child: Text('Balance Screen'),
-                          ),
+                          BalanceScreen(),
                           Center(
                             child: Text('Activity Screen'),
                           ),
