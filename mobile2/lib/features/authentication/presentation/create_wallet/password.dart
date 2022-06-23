@@ -2,8 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile2/constants/colors.dart';
 
+enum TermsAgreement { agree, disagree }
+
 class CreatePasswordScreen extends StatelessWidget {
-  const CreatePasswordScreen({Key? key}) : super(key: key);
+  CreatePasswordScreen({Key? key}) : super(key: key);
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _verifyPasswordController = TextEditingController();
+  final ValueNotifier<TermsAgreement> terms = ValueNotifier(TermsAgreement.agree);
 
   @override
   Widget build(BuildContext context) {
@@ -53,16 +59,68 @@ class CreatePasswordScreen extends StatelessWidget {
                     ),
                   ),
                   // TODO: Create Text Field Widget
-                  TextFormField(),
+                  TextFormField(
+                    controller: _passwordController,
+                    decoration: const InputDecoration(
+                      labelText: 'Create',
+                      labelStyle: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.inactive,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 20),
-                  TextFormField(),
+                  TextFormField(
+                    controller: _verifyPasswordController,
+                    decoration: const InputDecoration(
+                      labelText: 'Confirm',
+                      labelStyle: TextStyle(
+                        fontSize: 13,
+                        color: AppTheme.inactive,
+                        fontStyle: FontStyle.normal,
+                      ),
+                    ),
+                  ),
                   const SizedBox(height: 40),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Radio(value: 0, groupValue: 0, onChanged: (value) {}),
-                      Text('I agree to Terms of Service')
+                      ValueListenableBuilder(
+                          valueListenable: terms,
+                          builder: (BuildContext context, TermsAgreement value, Widget? widget) {
+                            return Radio(
+                              value: TermsAgreement.agree,
+                              groupValue: value,
+                              onChanged: (TermsAgreement? value) {
+                                print(value);
+                                terms.value = value!;
+                              },
+                            );
+                          }),
+                      const Text('I agree to Terms of Service')
                     ],
-                  )
+                  ),
+                  const SizedBox(height: 40),
+                  SizedBox(
+                    width: 250,
+                    child: MaterialButton(
+                      onPressed: () {},
+                      color: const Color.fromRGBO(99, 99, 99, 0.1),
+                      textColor: const Color(0xFFCB4EE8),
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                      padding: const EdgeInsets.symmetric(vertical: 13),
+                      child: Text(
+                        'Continue',
+                        style: GoogleFonts.dmSans(
+                          fontSize: 19,
+                          color: AppTheme.inactive,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),
