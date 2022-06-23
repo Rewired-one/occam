@@ -27,7 +27,7 @@ class _CheckAuthenticationState extends State<CheckAuthentication> {
       listener: (context, state) {},
       builder: (context, state) {
         if (state.status == AuthStatus.authenticated) {
-          return const MainNavigationScreen();
+          return MainNavigationScreen();
         }
         if (state.status == AuthStatus.userSignIn) {
           return const SignInScreen();

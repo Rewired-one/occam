@@ -44,11 +44,11 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark(),
         routes: {
           '/': (context) => const CheckAuthentication(),
-          '/sign_in': (context) => SignInScreen(),
+          '/sign_in': (context) => const SignInScreen(),
           '/sign_up': (context) => const SignUpScreen(),
           '/create_wallet': (context) => const CreateWallet(),
           '/create_password': ((context) => const CreatePasswordScreen()),
-          '/main': ((context) => const MainNavigationScreen())
+          '/main': ((context) => MainNavigationScreen())
         },
       ),
     );
