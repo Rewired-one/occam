@@ -7,12 +7,14 @@ class InputWidget extends StatefulWidget {
     this.labelText,
     this.onChanged,
     this.validator,
+    this.obscureText = false,
     Key? key,
   }) : super(key: key);
   final String? labelText;
   final TextEditingController? controller;
   final Function(String? value)? onChanged;
   final String? Function(String? value)? validator;
+  final bool obscureText;
 
   @override
   State<InputWidget> createState() => _InputWidgetState();
@@ -20,6 +22,12 @@ class InputWidget extends StatefulWidget {
 
 class _InputWidgetState extends State<InputWidget> {
   bool _obscureState = false;
+
+  @override
+  void initState() {
+    _obscureState = widget.obscureText ? widget.obscureText : false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

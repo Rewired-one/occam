@@ -1,7 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
-import 'package:colorful_iconify_flutter/icons/icon_park.dart';
+import 'package:colorful_iconify_flutter/icons/icon_park.dart' as park_icons;
 import 'package:iconify_flutter/icons/ic.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:iconify_flutter/icons/fa6_solid.dart';
@@ -78,7 +79,7 @@ class MainNavigationScreen extends StatelessWidget {
               items: const [
                 BottomNavigationBarItem(
                   label: 'Airdrop',
-                  icon: Iconify(IconPark.parachute),
+                  icon: Iconify(park_icons.IconPark.parachute),
                 ),
                 BottomNavigationBarItem(
                   label: 'Occam',
