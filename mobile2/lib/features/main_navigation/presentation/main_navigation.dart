@@ -7,8 +7,8 @@ import 'package:iconify_flutter/icons/ic.dart';
 import 'package:iconify_flutter/icons/mdi.dart';
 import 'package:iconify_flutter/icons/fa6_solid.dart';
 import 'package:mobile2/constants/colors.dart';
-import 'package:mobile2/features/main_navigation/presentation/occam/balance.dart';
 import 'package:mobile2/features/main_navigation/presentation/second_navigation.dart';
+import 'package:mobile2/features/occam/presentation/balance.dart';
 
 class MainNavigationScreen extends StatelessWidget {
   MainNavigationScreen({Key? key}) : super(key: key);

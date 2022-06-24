@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile2/constants/colors.dart';
 
 class TextWidget extends StatelessWidget {
   const TextWidget(
@@ -8,14 +9,14 @@ class TextWidget extends StatelessWidget {
     this.fontWeight = FontWeight.w500,
     this.fontSize,
     this.height,
-    this.color,
+    this.color = AppTheme.primary,
     Key? key,
   }) : super(key: key);
 
   final String text;
   final double? fontSize;
   final FontWeight? fontWeight;
-  final Color? color;
+  final Color color;
   final double? height;
   final TextOverflow? textOverflow;
 
