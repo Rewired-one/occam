@@ -33,8 +33,9 @@ class CreateWalletRepository implements ICreateWalletFacade {
     try {
       await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
       final prefs = await SharedPreferences.getInstance();
-      prefs.setBool('hasSignedUp', true);
-      prefs.setString('userAccount', email);
+      prefs
+        ..setBool('hasSignedUp', true)
+        ..setString('userAccount', email);
       return right(unit);
     } on FirebaseAuthException catch (error) {
       return left(error.message!);

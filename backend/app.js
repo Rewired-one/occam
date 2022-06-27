@@ -20,6 +20,69 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+const SOLANA_DEVNET = 'https://api.devnet.solana.com';
+const SOLANA_TESTNET = 'https://api.testnet.solana.com';
+const SOLANA_MAINNET_BETA = 'https://api.mainnet-beta.solana.com';
+
+app.post('/createWallet', (req, res) => {
+    const { userId, walletName } = req.body
+
+    exec('sh ./scripts/wallet.sh', async (error, stdout, stderr) => {
+        try {
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+                throw Error(error)
+            }
+
+            const split = stdout.split('\n');
+            const mnemonicPhrase = split[5];
+
+            const seed = bip39.mnemonicToSeedSync(mnemonicPhrase, "");
+            const keypair = Keypair.fromSeed(seed.slice(0, 32));
+
+            const privKeyBase58String = bs58.encode(keypair.secretKey);
+            const pubKey = keypair.publicKey.toBase58();
+
+            // find user's wallet
+            // upload a new wallet
+
+            const newWallet = {
+                walletName: walletName ?? pubKey,
+                pubKey,
+                mnemonicPhrase,
+                privKeyArray: keypair.secretKey,
+                privKey: privKeyBase58String,
+                isMaster: false
+            };
+
+            
+
+            const db = getFirestore();
+
+            const walletRef = db.collection('wallets').doc(userId)
+            await walletRef.update({
+                [`wallets.${pubKey}`]: {
+                    ...newWallet
+                }
+            })
+            
+
+            res.send({
+                success: true,
+                newWallet
+            });
+
+        } catch (error) {
+            console.log('ERROR: ', error)
+            res.send({
+                success: false,
+                error: error
+            });
+        };
+        
+    });
+});
+
 app.post('/createNewUser', (req, res) => {
     exec('sh ./scripts/wallet.sh', async (error, stdout, stderr) => {
 
@@ -47,13 +110,15 @@ app.post('/createNewUser', (req, res) => {
                 id: `${pubKey}@occam.io`,
                 wallets: {
                     master: {
+                        walletName: pubKey,
                         pubKey,
                         mnemonicPhrase,
                         privKeyArray: keypair.secretKey,
                         privKey: privKeyBase58String,
+                        isMaster: true
                     },
                 }
-            }
+            };
 
             const db = getFirestore();
             const batch = db.batch();
@@ -74,17 +139,33 @@ app.post('/createNewUser', (req, res) => {
             res.send({
                 success: false,
                 error: error
-            })
+            });
         }
         
-    })
+    });
 
-})
+});
 
 app.post('/checkBalance', (req, res) => {
-    const { pub_key } = req.body
+    const { pubKey, network } = req.body
 
-    exec(`sh ./scripts/balance.sh ${pub_key}`, (error, stdout, stderr) => {
+    let urlNetwork = '';
+    switch(network) {
+        case 'MAINNET_BETA': {
+            urlNetwork = SOLANA_MAINNET_BETA;
+            break;
+        }
+        case 'TESTNET': {
+            urlNetwork = SOLANA_TESTNET;
+            break;
+        }
+        case 'DEVNET': {
+            urlNetwork = SOLANA_DEVNET;
+            break;
+        }
+    }
+
+    exec(`sh ./scripts/balance.sh ${pubKey} ${urlNetwork}`, (error, stdout, stderr) => {
 
         if (error !== null) {
             console.log('ERROR: ', error)
@@ -96,6 +177,8 @@ app.post('/checkBalance', (req, res) => {
 
         const balance = stdout.split(' ')[0]
         console.log('BALANCE: ', balance)
+
+        // Get BALANCE VALUE IN US DOLLARS
 
         return res.send({
             success: true,
