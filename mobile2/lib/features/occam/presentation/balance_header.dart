@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -30,6 +32,7 @@ class _BalanceHeaderState extends State<BalanceHeader> {
 
   @override
   Widget build(BuildContext context) {
+    print(inspect(ClusterNetworks.values));
     return BlocBuilder<BalanceCubit, BalanceState>(
       builder: (context, state) {
         switch (state.status) {
@@ -45,7 +48,7 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                   children: [
                     const Spacer(),
                     DropdownButton2(
-                      value: state.selectedNetwork.name,
+                      value: state.selectedNetwork,
                       underline: const SizedBox.shrink(),
                       icon: const Icon(
                         Icons.expand_more,
@@ -56,38 +59,20 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                       style: GoogleFonts.dmSans(),
                       isExpanded: true,
                       offset: const Offset(-20, 0),
-                      onChanged: (String? value) {},
+                      onChanged: (ClusterNetworks? value) {
+                        context.read<BalanceCubit>().changeNetwork(value!);
+                      },
                       items: [
                         ...ClusterNetworks.values.map(
                           (network) => DropdownMenuItem(
-                            child: TextWidget(network.name),
-                            value: network.name,
+                            value: network,
+                            child: TextWidget(
+                              network.name,
+                              color: AppTheme.purple,
+                              textOverflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         )
-                        // DropdownMenuItem(
-                        //   value: ClusterNetworks.mainnet,
-                        //   child: TextWidget(
-                        //     'Mainnet Beta',
-                        //     color: AppTheme.primary,
-                        //     textOverflow: TextOverflow.ellipsis,
-                        //   ),
-                        // ),
-                        // DropdownMenuItem(
-                        //   value: ClusterNetworks.testnet,
-                        //   child: TextWidget(
-                        //     'Testnet',
-                        //     color: AppTheme.primary,
-                        //     textOverflow: TextOverflow.ellipsis,
-                        //   ),
-                        // ),
-                        // DropdownMenuItem(
-                        //   value: ClusterNetworks.devnet,
-                        //   child: TextWidget(
-                        //     'Devnet',
-                        //     color: AppTheme.primary,
-                        //     textOverflow: TextOverflow.ellipsis,
-                        //   ),
-                        // )
                       ],
                     ),
                     Expanded(
@@ -132,7 +117,7 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                       isExpanded: true,
                       offset: const Offset(-20, 0),
                       onChanged: (String? value) {
-                        // _selectedWallet.value = value!;
+                        context.read<BalanceCubit>().changeWallet(value!);
                       },
                       items: [
                         ...state.walletList.map(

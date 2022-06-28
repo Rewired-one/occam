@@ -48,12 +48,36 @@ class BalanceCubit extends Cubit<BalanceState> {
   }
 
   Future<void> changeNetwork(ClusterNetworks network) async {
-    // IF NETWORK IS CHANGED:
-    // Check Balance
-    // Change Network
+    emit(
+      BalanceState(status: BalanceStatus.loading, walletList: state.walletList, selectedWallet: state.selectedWallet),
+    );
+    final balance = await balanceRepository.checkBalance(state.selectedWallet!.pubKey, network.url);
+    emit(
+      BalanceState(
+        status: BalanceStatus.success,
+        walletList: state.walletList,
+        selectedWallet: state.selectedWallet,
+        balance: balance,
+        selectedNetwork: network,
+      ),
+    );
   }
 
-  Future<void> changeWallet(String pubKey) async {
+  Future<void> changeWallet(String walletName) async {
+    final newSelectedWallet = state.walletList.singleWhere((wallet) => wallet.walletName == walletName);
+    emit(
+      BalanceState(status: BalanceStatus.loading, walletList: state.walletList, selectedNetwork: state.selectedNetwork),
+    );
+    final balance = await balanceRepository.checkBalance(newSelectedWallet.pubKey, state.selectedNetwork.url);
+    emit(
+      BalanceState(
+        status: BalanceStatus.success,
+        walletList: state.walletList,
+        selectedNetwork: state.selectedNetwork,
+        selectedWallet: newSelectedWallet,
+        balance: balance,
+      ),
+    );
     // Check Balance
     // Change Selected Wallet
   }
