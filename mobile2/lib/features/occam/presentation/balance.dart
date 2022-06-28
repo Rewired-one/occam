@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile2/constants/colors.dart';
+
 import 'package:mobile2/features/occam/presentation/balance_header.dart';
 import 'package:mobile2/features/occam/presentation/balance_sheet.dart';
-import 'package:mobile2/widgets/text_widget.dart';
 
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({Key? key}) : super(key: key);
@@ -32,7 +31,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     ),
                   ),
                 ),
-                child: BalanceHeader(),
+                child: const BalanceHeader(),
               ),
               const BalanceSheet()
             ],

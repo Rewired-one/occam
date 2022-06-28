@@ -1,6 +1,6 @@
 part of 'balance_cubit.dart';
 
-enum BalanceStatus { initial, loading, success, error }
+enum BalanceStatus { initial, loading, success }
 
 enum ClusterNetworks {
   mainnet(

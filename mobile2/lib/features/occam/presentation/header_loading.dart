@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile2/widgets/text_widget.dart';
+import 'package:mobile2/widgets/loading_skeleton.dart';
 
 class BalanceHeaderLoading extends StatelessWidget {
   const BalanceHeaderLoading({Key? key}) : super(key: key);
@@ -7,31 +7,28 @@ class BalanceHeaderLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        const SizedBox(height: 20),
         Row(
           children: [
             const Spacer(),
-            Container(color: const Color.fromRGBO(77, 77, 77, .5), width: 80, height: 20),
+            const LoadingSkeleton(size: Size(80, 20)),
             Expanded(
               child: Container(
-                margin: const EdgeInsets.only(right: 20),
-                width: double.infinity,
-                child: Align(
+                margin: const EdgeInsets.only(right: 40),
+                width: 20,
+                child: const Align(
                   alignment: Alignment.centerRight,
-                  child: IconButton(
-                    icon: const Icon(Icons.qr_code),
-                    onPressed: () {},
+                  child: LoadingSkeleton(
+                    size: Size(20, 20),
                   ),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 20),
-        Container(color: const Color.fromRGBO(77, 77, 77, .5), width: 166, height: 65),
-        const SizedBox(height: 30),
-        Container(color: const Color.fromRGBO(77, 77, 77, .5), width: 140, height: 30),
+        const LoadingSkeleton(size: Size(166, 65)),
+        const LoadingSkeleton(size: Size(140, 30)),
       ],
     );
   }
