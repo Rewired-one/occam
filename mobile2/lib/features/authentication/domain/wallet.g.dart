@@ -13,5 +13,5 @@ Wallet _$WalletFromJson(Map<String, dynamic> json) => Wallet(
 
 Map<String, dynamic> _$WalletToJson(Wallet instance) => <String, dynamic>{
       'pubKey': instance.pubKey,
-      'mneumonicPhrase': instance.mnemonicPhrase,
+      'mnemonicPhrase': instance.mnemonicPhrase,
     };

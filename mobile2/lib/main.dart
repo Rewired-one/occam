@@ -12,6 +12,8 @@ import 'package:mobile2/features/authentication/presentation/create_wallet/passw
 import 'package:mobile2/features/authentication/presentation/sign_in.dart';
 import 'package:mobile2/features/authentication/presentation/sign_up.dart';
 import 'package:mobile2/features/main_navigation/presentation/main_navigation.dart';
+import 'package:mobile2/features/occam/application/balance/balance_cubit.dart';
+import 'package:mobile2/features/occam/infrastructure/balance_repository.dart';
 import 'package:mobile2/firebase_options.dart';
 
 void main() async {
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (_) => AuthenticationCubit(AuthenticationRepository())),
         BlocProvider(create: (_) => CreateWalletCubit(CreateWalletRepository())),
+        BlocProvider(create: (_) => BalanceCubit(BalanceRepository())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
