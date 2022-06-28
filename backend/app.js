@@ -147,36 +147,29 @@ app.post('/createNewUser', (req, res) => {
 });
 
 app.post('/checkBalance', (req, res) => {
+    
     const { pubKey, network } = req.body
 
-    let urlNetwork = '';
-    switch(network) {
-        case 'MAINNET_BETA': {
-            urlNetwork = SOLANA_MAINNET_BETA;
-            break;
-        }
-        case 'TESTNET': {
-            urlNetwork = SOLANA_TESTNET;
-            break;
-        }
-        case 'DEVNET': {
-            urlNetwork = SOLANA_DEVNET;
-            break;
-        }
+    if(!pubKey || !network) {
+        res.send({
+            success: false,
+            balance: null,
+            error: 'No Pub Key or Network'
+        });
     }
 
-    exec(`sh ./scripts/balance.sh ${pubKey} ${urlNetwork}`, (error, stdout, stderr) => {
+    exec(`sh ./scripts/balance.sh ${pubKey} ${network}`, (error, stdout, stderr) => {
 
         if (error !== null) {
             console.log('ERROR: ', error)
             return res.send({
                 success: false,
                 balance: null
-            })
+            });
         }
 
-        const balance = stdout.split(' ')[0]
-        console.log('BALANCE: ', balance)
+        const balance = stdout.split(' ')[0];
+        console.log('BALANCE: ', balance);
 
         // Get BALANCE VALUE IN US DOLLARS
 
