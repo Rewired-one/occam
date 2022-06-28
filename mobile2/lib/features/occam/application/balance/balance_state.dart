@@ -4,15 +4,15 @@ enum BalanceStatus { initial, loading, success, error }
 
 enum ClusterNetworks {
   mainnet(
-    name: 'MAINNET_BETA',
+    name: 'Mainnet Beta',
     url: 'https://api.mainnet-beta.solana.com',
   ),
   testnet(
-    name: 'TESTNET',
+    name: 'Testnet',
     url: 'https://api.testnet.solana.com',
   ),
   devnet(
-    name: 'DEVNET',
+    name: 'Devnet',
     url: 'https://api.devnet.solana.com',
   );
 
