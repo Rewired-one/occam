@@ -9,3 +9,8 @@ A Solana Wallet built with the Flutter Framework.
 ### Preview 
 
 - preview here -
+
+### About
+
+- author info here -
+
