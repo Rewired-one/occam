@@ -1,3 +1,7 @@
 # Occam Wallet - A Solana Wallet
 
-A Solana Wallet built with the Flutter Framework
+A Solana Wallet built with the Flutter Framework.
+
+### Setup
+
+- setup instructions here -
