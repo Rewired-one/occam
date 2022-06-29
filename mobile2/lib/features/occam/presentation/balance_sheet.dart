@@ -11,11 +11,12 @@ import 'package:mobile2/features/occam/application/balance/balance_cubit.dart';
 // Return list of USD amount of each
 
 final assets = [
-  {'name': 'Solana', 'prefix': 'SOL', 'image': '', 'currentValue': '\$10'},
-  {'name': 'Tether', 'prefix': 'USDT', 'image': '', 'currentValue': '\$10'},
-  {'name': 'Chainlink', 'prefix': 'LINK', 'image': '', 'currentValue': '\$10'},
-  {'name': 'Terra', 'prefix': 'LUNA', 'image': '', 'currentValue': '\$10'},
-  {'name': 'USD Coin', 'prefix': 'USDC', 'image': '', 'currentValue': '\$10'},
+  {'name': 'Solana', 'prefix': 'SOL', 'image': 'solana.png', 'currentValue': 35.37},
+  {'name': 'Bitcoin', 'prefix': 'BTC', 'image': 'bitcoin.png', 'currentValue': 20288.03},
+  {'name': 'EOS', 'prefix': 'EOS', 'image': 'eos.png', 'currentValue': 0.946094},
+  {'name': 'Ethereum', 'prefix': 'ETH', 'image': 'eth.png', 'currentValue': 1144.51},
+  {'name': 'Tether', 'prefix': 'USDT', 'image': 'usdt.png', 'currentValue': 0.999671},
+  {'name': 'USD Coin', 'prefix': 'USDC', 'image': 'usdc.png', 'currentValue': 0.999367},
 ];
 
 class BalanceSheet extends StatelessWidget {
@@ -36,27 +37,33 @@ class BalanceSheet extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 40),
                 itemCount: assets.length,
                 itemBuilder: (context, index) {
+                  final asset = assets[index];
+
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     child: Row(
                       children: [
-                        const Icon(Icons.circle, size: 50),
+                        Image.asset(
+                          'assets/images/crypto_assets/${asset['image']}',
+                          width: 45,
+                          fit: BoxFit.fill,
+                        ),
                         Expanded(
                           child: Column(
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 7.5),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: const [
+                                  children: [
                                     TextWidget(
-                                      'Solana',
+                                      asset['name'].toString(),
                                       fontSize: 16,
                                       color: AppTheme.primary,
                                     ),
                                     TextWidget(
-                                      '\$1,000',
+                                      asset['currentValue'].toString(),
                                       fontSize: 16,
                                     ),
                                   ],
@@ -67,18 +74,18 @@ class BalanceSheet extends StatelessWidget {
                                 thickness: 1,
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 5),
+                                padding: const EdgeInsets.symmetric(horizontal: 7.5),
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: const [
+                                  children: [
                                     TextWidget(
-                                      'SOL',
+                                      asset['prefix'].toString(),
                                       fontSize: 16,
                                       color: AppTheme.inactive,
                                     ),
-                                    TextWidget(
-                                      '10',
+                                    const TextWidget(
+                                      '0',
                                       fontSize: 16,
                                       color: AppTheme.inactive,
                                     ),
