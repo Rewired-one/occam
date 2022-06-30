@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// App Theme Colors
 class AppTheme {
   static const purple = Color(0xFFCB4EE8);
   static const green = Color(0xFF9CEC5B);
