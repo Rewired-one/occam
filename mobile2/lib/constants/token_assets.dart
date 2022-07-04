@@ -50,13 +50,13 @@ const List<Map<String, dynamic>> assets = [
   {
     'name': 'Stellar',
     'prefix': 'XLM',
-    'image': 'luna.png',
+    'image': 'xlm.png',
     'id': 'stellar',
   },
   {
     'name': 'Dogecoin',
     'prefix': 'doge',
-    'image': 'luna.png',
+    'image': 'doge.png',
     'id': 'dogecoin',
   },
   {
