@@ -9,6 +9,7 @@ class AuthenticationRepository implements IAuthFacade {
   @override
   Future<String?> checkUserHasSignedUp() async {
     final prefs = await SharedPreferences.getInstance();
+
     final bool? hasSignedUp = prefs.getBool('hasSignedUp');
     if (hasSignedUp ?? false) {
       final String? userAccount = prefs.getString('userAccount');

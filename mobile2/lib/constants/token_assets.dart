@@ -1,4 +1,4 @@
-const List<Map<String, dynamic>> assets = [
+const List<Map<String, dynamic>> tokenAssets = [
   {
     'name': 'Solana',
     'prefix': 'SOL',

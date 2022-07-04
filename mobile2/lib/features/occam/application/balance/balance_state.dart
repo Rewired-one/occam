@@ -33,15 +33,18 @@ class BalanceState {
     this.selectedNetwork = ClusterNetworks.devnet,
     this.walletList = const [],
     this.selectedWallet,
+    this.selectedTokens = const [],
+    this.error = false,
+    this.errorMessage,
   });
   final ClusterNetworks selectedNetwork;
   final BalanceStatus status;
   final double balance;
   final List<AppWallet> walletList;
   final AppWallet? selectedWallet;
-
-  @override
-  String toString() => 'BalanceState(selectedNetwork: $selectedNetwork, status: $status, balance: $balance)';
+  final List<TokenAsset> selectedTokens;
+  final bool error;
+  final String? errorMessage;
 
   @override
   bool operator ==(Object other) {
@@ -52,7 +55,10 @@ class BalanceState {
         other.status == status &&
         other.balance == balance &&
         listEquals(other.walletList, walletList) &&
-        other.selectedWallet == selectedWallet;
+        other.selectedWallet == selectedWallet &&
+        listEquals(other.selectedTokens, selectedTokens) &&
+        other.error == error &&
+        other.errorMessage == errorMessage;
   }
 
   @override
@@ -61,6 +67,9 @@ class BalanceState {
         status.hashCode ^
         balance.hashCode ^
         walletList.hashCode ^
-        selectedWallet.hashCode;
+        selectedWallet.hashCode ^
+        selectedTokens.hashCode ^
+        error.hashCode ^
+        errorMessage.hashCode;
   }
 }
