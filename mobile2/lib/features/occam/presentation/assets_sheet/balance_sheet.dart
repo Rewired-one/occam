@@ -48,7 +48,7 @@ class BalanceSheet extends StatelessWidget {
                         Container(
                           margin: const EdgeInsets.only(bottom: 20),
                           child: RoundButton(
-                            text: 'Manage Assets',
+                            text: 'Manage Tokens',
                             fontSize: 12,
                             fontWeight: FontWeight.normal,
                             onPressed: () => Navigator.of(context)
