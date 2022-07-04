@@ -35,7 +35,6 @@ class BalanceCubit extends Cubit<BalanceState> {
     }).toList();
 
     // Check Balance for each coin
-
     final uri = Uri.https('api.coingecko.com', '/api/v3/simple/price', {
       'ids': idsList.join(',').toString(),
       'vs_currencies': 'usd',
@@ -135,8 +134,22 @@ class BalanceCubit extends Cubit<BalanceState> {
 
     // If select is true, add token to selectedTokens and also shared preference
     if (select) {
+      // Check Balance for each coin
+      final uri = Uri.https('api.coingecko.com', '/api/v3/simple/price', {
+        'ids': id,
+        'vs_currencies': 'usd',
+      });
+
+      Map<String, String> headers = <String, String>{
+        'Content-Type': 'application/json',
+      };
+
+      final apiResponse = await http.get(uri, headers: headers);
+      final decodedApiResponse = jsonDecode(apiResponse.body) as Map<String, dynamic>;
+      final currentValue = decodedApiResponse[id]['usd'];
+
       final newToken = tokenAssets.singleWhere((element) => element['id'] == id);
-      currentTokenList.add(TokenAsset.fromMap(newToken, 0.0));
+      currentTokenList.add(TokenAsset.fromMap(newToken, currentValue));
     } else {
       // If select == false, remove the selected token from list and shared preferences
       currentTokenList.removeWhere((element) => element.id == id);
