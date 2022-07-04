@@ -39,16 +39,13 @@ class AuthenticationRepository implements IAuthFacade {
         if (response.data() == null) throw Exception('No User Found!');
         final appUser = AppUser.fromJson(response.data()!);
         return right(appUser);
-        // emit(AuthState(status: AuthStatus.authenticated, appUser: appUser));
       } else {
         throw Exception('No Email Stored on Shared Preferences!');
       }
     } on FirebaseAuthException catch (error) {
       return left(error.message!);
-      // emit(AuthState(status: AuthStatus.userSignIn, errorMessage: error.message));
     } on Exception catch (error) {
       return left(error.toString());
-      // emit(AuthState(status: AuthStatus.userSignIn, errorMessage: error.toString()));
     }
   }
 

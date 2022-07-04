@@ -38,9 +38,9 @@ class BalanceSheet extends StatelessWidget {
             return Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
-                itemCount: assets.length + 1,
+                itemCount: state.selectedTokens.length + 1,
                 itemBuilder: (context, index) {
-                  if (index == assets.length) {
+                  if (index == state.selectedTokens.length) {
                     return Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -60,14 +60,14 @@ class BalanceSheet extends StatelessWidget {
                     );
                   }
 
-                  final asset = assets[index];
+                  final tokenAsset = state.selectedTokens[index];
 
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 20),
                     child: Row(
                       children: [
                         Image.asset(
-                          'assets/images/crypto_assets/${asset['image']}',
+                          'assets/images/crypto_assets/${tokenAsset.image}',
                           width: 45,
                           fit: BoxFit.fill,
                         ),
@@ -81,12 +81,12 @@ class BalanceSheet extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextWidget(
-                                      asset['name'].toString(),
+                                      tokenAsset.name,
                                       fontSize: 16,
                                       color: AppTheme.primary,
                                     ),
                                     TextWidget(
-                                      asset['currentValue'].toString(),
+                                      '0',
                                       fontSize: 16,
                                     ),
                                   ],
@@ -103,7 +103,7 @@ class BalanceSheet extends StatelessWidget {
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     TextWidget(
-                                      asset['prefix'].toString(),
+                                      tokenAsset.prefix,
                                       fontSize: 16,
                                       color: AppTheme.inactive,
                                     ),
