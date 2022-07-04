@@ -9,19 +9,6 @@ import 'package:mobile2/widgets/text_widget.dart';
 import 'package:mobile2/features/occam/application/balance/balance_cubit.dart';
 import 'package:mobile2/features/occam/presentation/assets_sheet/sheet_loading.dart';
 
-// Display Assets in List
-// Retrieve current USD amount of each Asset
-// Return list of USD amount of each
-
-final assets = [
-  {'name': 'Solana', 'prefix': 'SOL', 'image': 'solana.png', 'currentValue': 35.37},
-  {'name': 'Bitcoin', 'prefix': 'BTC', 'image': 'bitcoin.png', 'currentValue': 20288.03},
-  {'name': 'EOS', 'prefix': 'EOS', 'image': 'eos.png', 'currentValue': 0.946094},
-  {'name': 'Ethereum', 'prefix': 'ETH', 'image': 'eth.png', 'currentValue': 1144.51},
-  {'name': 'Tether', 'prefix': 'USDT', 'image': 'usdt.png', 'currentValue': 0.999671},
-  {'name': 'USD Coin', 'prefix': 'USDC', 'image': 'usdc.png', 'currentValue': 0.999367},
-];
-
 class BalanceSheet extends StatelessWidget {
   const BalanceSheet({Key? key}) : super(key: key);
 
@@ -86,7 +73,7 @@ class BalanceSheet extends StatelessWidget {
                                       color: AppTheme.primary,
                                     ),
                                     TextWidget(
-                                      '0',
+                                      '\$${tokenAsset.currentValue}',
                                       fontSize: 16,
                                     ),
                                   ],

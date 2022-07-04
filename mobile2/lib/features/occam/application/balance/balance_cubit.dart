@@ -10,6 +10,8 @@ import 'package:mobile2/features/occam/domain/token_asset.dart';
 import 'package:mobile2/features/occam/infrastructure/balance_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:http/http.dart' as http;
+
 part 'balance_state.dart';
 
 class BalanceCubit extends Cubit<BalanceState> {
@@ -25,12 +27,32 @@ class BalanceCubit extends Cubit<BalanceState> {
     final userAccount = prefs.getString('userAccount');
 
     // Get previously selected tokens to be views
-
     final selectedTokens = prefs.getStringList('selectedTokens') ?? [];
+
+    final idsList = selectedTokens.map((e) {
+      final decoded = jsonDecode(e);
+      return decoded['id'];
+    }).toList();
+
+    // Check Balance for each coin
+
+    final uri = Uri.https('api.coingecko.com', '/api/v3/simple/price', {
+      'ids': idsList.join(',').toString(),
+      'vs_currencies': 'usd',
+    });
+
+    Map<String, String> headers = <String, String>{
+      'Content-Type': 'application/json',
+    };
+
+    final apiResponse = await http.get(uri, headers: headers);
+
+    final decodedApiResponse = jsonDecode(apiResponse.body) as Map<String, dynamic>;
 
     final List<TokenAsset> tokenAssets = selectedTokens.map((e) {
       final decoded = jsonDecode(e);
-      return TokenAsset.fromMap(decoded);
+      final currentValue = decodedApiResponse[decoded['id']]['usd'];
+      return TokenAsset.fromMap(decoded, currentValue);
     }).toList();
 
     // Get List of Wallets from User
@@ -114,7 +136,7 @@ class BalanceCubit extends Cubit<BalanceState> {
     // If select is true, add token to selectedTokens and also shared preference
     if (select) {
       final newToken = tokenAssets.singleWhere((element) => element['id'] == id);
-      currentTokenList.add(TokenAsset.fromMap(newToken));
+      currentTokenList.add(TokenAsset.fromMap(newToken, 0.0));
     } else {
       // If select == false, remove the selected token from list and shared preferences
       currentTokenList.removeWhere((element) => element.id == id);

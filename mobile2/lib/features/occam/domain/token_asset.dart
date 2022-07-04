@@ -9,19 +9,21 @@ class TokenAsset {
     required this.image,
     required this.prefix,
     required this.id,
+    required this.currentValue,
   });
 
   final String name;
   final String image;
   final String prefix;
   final String id;
+  final double currentValue;
 
-  factory TokenAsset.fromMap(Map<String, dynamic> map) => TokenAsset(
-        name: map['name'] as String,
-        image: map['image'] as String,
-        prefix: map['prefix'] as String,
-        id: map['id'] as String,
-      );
+  factory TokenAsset.fromMap(Map<String, dynamic> map, double currentValue) => TokenAsset(
+      name: map['name'] as String,
+      image: map['image'] as String,
+      prefix: map['prefix'] as String,
+      id: map['id'] as String,
+      currentValue: currentValue);
 
   String toJson() => jsonEncode(
         <String, dynamic>{
