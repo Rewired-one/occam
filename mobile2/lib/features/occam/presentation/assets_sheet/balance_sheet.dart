@@ -49,7 +49,8 @@ class BalanceSheet extends StatelessWidget {
 
                   final tokenAsset = state.selectedTokens[index];
 
-                  final solanaTokensOwned = tokenAsset.id == 'solana' ? state.solanaTokensOwned : 0;
+                  final solanaTokensOwned =
+                      tokenAsset.id == 'solana' ? state.solanaTokensOwned.toStringAsFixed(0) : '0';
 
                   return Container(
                     margin: const EdgeInsets.symmetric(vertical: 20),
@@ -97,7 +98,7 @@ class BalanceSheet extends StatelessWidget {
                                       color: AppTheme.inactive,
                                     ),
                                     TextWidget(
-                                      '$solanaTokensOwned',
+                                      solanaTokensOwned,
                                       fontSize: 16,
                                       color: AppTheme.inactive,
                                     ),
