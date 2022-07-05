@@ -10,8 +10,6 @@ import 'package:mobile2/features/occam/domain/token_asset.dart';
 import 'package:mobile2/features/occam/infrastructure/balance_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:http/http.dart' as http;
-
 part 'balance_state.dart';
 
 class BalanceCubit extends Cubit<BalanceState> {
@@ -30,14 +28,14 @@ class BalanceCubit extends Cubit<BalanceState> {
     final selectedWallet = wallets[0];
 
     // Check the SOL balance of the Wallet
-    final balance = await balanceRepository.checkBalance(selectedWallet.pubKey, state.selectedNetwork.url);
+    final solanaTokensOwned = await balanceRepository.checkBalance(selectedWallet.pubKey, state.selectedNetwork.url);
 
     // fetch tokenAssets
     final tokenAssets = await balanceRepository.fetchTokenAssets();
 
     final solCurrentValue = tokenAssets.singleWhere((element) => element.id == 'solana').currentValue;
 
-    final solanaBalanceInUSD = balance * solCurrentValue;
+    final solanaBalanceInUSD = solanaTokensOwned * solCurrentValue;
 
     emit(
       BalanceState(
@@ -45,6 +43,7 @@ class BalanceCubit extends Cubit<BalanceState> {
         selectedWallet: selectedWallet,
         walletList: wallets,
         balance: solanaBalanceInUSD,
+        solanaTokensOwned: solanaTokensOwned,
         selectedTokens: tokenAssets,
       ),
     );
@@ -60,10 +59,10 @@ class BalanceCubit extends Cubit<BalanceState> {
       ),
     );
     // fetch tokenAssets
-    final balance = await balanceRepository.checkBalance(state.selectedWallet!.pubKey, network.url);
+    final solanaTokensOwned = await balanceRepository.checkBalance(state.selectedWallet!.pubKey, network.url);
     final tokenAssets = await balanceRepository.fetchTokenAssets();
     final solCurrentValue = tokenAssets.singleWhere((element) => element.id == 'solana').currentValue;
-    final solanaBalanceInUSD = balance * solCurrentValue;
+    final solanaBalanceInUSD = solanaTokensOwned * solCurrentValue;
 
     emit(
       BalanceState(
@@ -71,6 +70,7 @@ class BalanceCubit extends Cubit<BalanceState> {
         walletList: state.walletList,
         selectedWallet: state.selectedWallet,
         balance: solanaBalanceInUSD,
+        solanaTokensOwned: solanaTokensOwned,
         selectedNetwork: network,
         selectedTokens: tokenAssets,
       ),
@@ -87,11 +87,14 @@ class BalanceCubit extends Cubit<BalanceState> {
       ),
     );
     final newSelectedWallet = state.walletList.singleWhere((wallet) => wallet.walletName == walletName);
+
     // fetch tokenAssets
-    final balance = await balanceRepository.checkBalance(newSelectedWallet.pubKey, state.selectedNetwork.url);
+    final solanaTokensOwned = await balanceRepository.checkBalance(newSelectedWallet.pubKey, state.selectedNetwork.url);
+
     final tokenAssets = await balanceRepository.fetchTokenAssets();
     final solCurrentValue = tokenAssets.singleWhere((element) => element.id == 'solana').currentValue;
-    final solanaBalanceInUSD = balance * solCurrentValue;
+    final solanaBalanceInUSD = solanaTokensOwned * solCurrentValue;
+
     emit(
       BalanceState(
         status: BalanceStatus.success,
@@ -99,6 +102,7 @@ class BalanceCubit extends Cubit<BalanceState> {
         selectedNetwork: state.selectedNetwork,
         selectedWallet: newSelectedWallet,
         balance: solanaBalanceInUSD,
+        solanaTokensOwned: solanaTokensOwned,
         selectedTokens: tokenAssets,
       ),
     );
@@ -134,6 +138,7 @@ class BalanceCubit extends Cubit<BalanceState> {
         selectedNetwork: state.selectedNetwork,
         selectedWallet: state.selectedWallet,
         balance: state.balance,
+        solanaTokensOwned: state.solanaTokensOwned,
         selectedTokens: currentTokenList,
       ),
     );

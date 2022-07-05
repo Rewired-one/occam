@@ -30,6 +30,7 @@ class BalanceState {
   const BalanceState({
     required this.status,
     this.balance = 0.0,
+    this.solanaTokensOwned = 0.0,
     this.selectedNetwork = ClusterNetworks.devnet,
     this.walletList = const [],
     this.selectedWallet,
@@ -40,6 +41,7 @@ class BalanceState {
   final ClusterNetworks selectedNetwork;
   final BalanceStatus status;
   final double balance;
+  final double solanaTokensOwned;
   final List<AppWallet> walletList;
   final AppWallet? selectedWallet;
   final List<TokenAsset> selectedTokens;
