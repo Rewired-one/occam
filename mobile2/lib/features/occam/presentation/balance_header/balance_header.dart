@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -61,7 +63,7 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                             value: network,
                             child: TextWidget(
                               network.name,
-                              color: AppTheme.purple,
+                              color: AppTheme.primary,
                               textOverflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -76,7 +78,15 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                           alignment: Alignment.centerRight,
                           child: IconButton(
                             icon: const Icon(Icons.qr_code),
-                            onPressed: () {},
+                            onPressed: () {
+                              OverlayEntry? overlay;
+                              overlay = OverlayEntry(
+                                  builder: (context) => NetworkOverlay(
+                                        closeCallback: () => overlay?.remove(),
+                                      ));
+
+                              Overlay.of(context)?.insert(overlay);
+                            },
                           ),
                         ),
                       ),
@@ -130,6 +140,70 @@ class _BalanceHeaderState extends State<BalanceHeader> {
             );
         }
       },
+    );
+  }
+}
+
+class NetworkOverlay extends StatelessWidget {
+  const NetworkOverlay({Key? key, required this.closeCallback}) : super(key: key);
+
+  final Function closeCallback;
+
+  @override
+  Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    return Positioned(
+      top: 0,
+      left: 0,
+      width: size.width,
+      height: size.height,
+      child: Stack(
+        children: [
+          BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            child: Container(
+              color: Colors.black45.withOpacity(.75),
+            ),
+          ),
+          Positioned(
+            top: 70,
+            left: 100,
+            child: Material(
+              borderRadius: BorderRadius.circular(15),
+              child: SizedBox(
+                width: 200,
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => closeCallback.call(),
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 10.0, bottom: 5.0),
+                        child: TextWidget(
+                          'Testnet',
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                    const Divider(
+                      color: AppTheme.inactive,
+                    ),
+                    GestureDetector(
+                      onTap: () => closeCallback.call(),
+                      child: const Padding(
+                        padding: EdgeInsets.only(top: 5.0, bottom: 10),
+                        child: TextWidget(
+                          'Mainnet',
+                          fontSize: 17,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
     );
   }
 }
