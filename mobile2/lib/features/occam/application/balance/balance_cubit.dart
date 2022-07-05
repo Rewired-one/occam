@@ -23,53 +23,17 @@ class BalanceCubit extends Cubit<BalanceState> {
     // Get List of Wallets from User
     emit(const BalanceState(status: BalanceStatus.loading));
 
-    final prefs = await SharedPreferences.getInstance();
-    final userAccount = prefs.getString('userAccount');
-
-    // Get previously selected tokens to be views
-    final selectedTokens = prefs.getStringList('selectedTokens') ?? [];
-
-    final idsList = selectedTokens.map((e) {
-      final decoded = jsonDecode(e);
-      return decoded['id'];
-    }).toList();
-
-    // Check Balance for each coin
-    final uri = Uri.https('api.coingecko.com', '/api/v3/simple/price', {
-      'ids': idsList.join(',').toString(),
-      'vs_currencies': 'usd',
-    });
-
-    Map<String, String> headers = <String, String>{
-      'Content-Type': 'application/json',
-    };
-
-    final apiResponse = await http.get(uri, headers: headers);
-
-    final decodedApiResponse = jsonDecode(apiResponse.body) as Map<String, dynamic>;
-
-    final List<TokenAsset> tokenAssets = selectedTokens.map((e) {
-      final decoded = jsonDecode(e);
-      final currentValue = decodedApiResponse[decoded['id']]['usd'];
-      return TokenAsset.fromMap(decoded, currentValue);
-    }).toList();
+    // fetch tokenAssets
+    final tokenAssets = await balanceRepository.fetchTokenAssets();
 
     // Get List of Wallets from User
-    final response = await FirebaseFirestore.instance.collection('wallets').doc(userAccount).get();
-    final responseData = response.get('wallets') as Map<String, dynamic>;
-
-    final wallets = <AppWallet>[];
-    responseData.forEach((key, value) {
-      wallets.add(AppWallet.fromJson(value));
-    });
+    final wallets = await balanceRepository.fetchUserWallets();
 
     // Select the first Wallet
     final selectedWallet = wallets[0];
 
     // Check the balance of the Wallet
     final balance = await balanceRepository.checkBalance(selectedWallet.pubKey, state.selectedNetwork.url);
-
-    // Display Results
 
     emit(
       BalanceState(
@@ -105,7 +69,6 @@ class BalanceCubit extends Cubit<BalanceState> {
   }
 
   Future<void> changeWallet(String walletName) async {
-    final newSelectedWallet = state.walletList.singleWhere((wallet) => wallet.walletName == walletName);
     emit(
       BalanceState(
         status: BalanceStatus.loading,
@@ -114,6 +77,7 @@ class BalanceCubit extends Cubit<BalanceState> {
         selectedTokens: state.selectedTokens,
       ),
     );
+    final newSelectedWallet = state.walletList.singleWhere((wallet) => wallet.walletName == walletName);
     final balance = await balanceRepository.checkBalance(newSelectedWallet.pubKey, state.selectedNetwork.url);
     emit(
       BalanceState(
@@ -129,34 +93,26 @@ class BalanceCubit extends Cubit<BalanceState> {
 
   /// Selects tokens to be viewed on your Balance Sheet
   Future<void> selectToken(String id, bool select) async {
-    final prefs = await SharedPreferences.getInstance();
     List<TokenAsset> currentTokenList = [...state.selectedTokens];
 
     // If select is true, add token to selectedTokens and also shared preference
     if (select) {
       // Check Balance for each coin
-      final uri = Uri.https('api.coingecko.com', '/api/v3/simple/price', {
-        'ids': id,
-        'vs_currencies': 'usd',
-      });
-
-      Map<String, String> headers = <String, String>{
-        'Content-Type': 'application/json',
-      };
-
-      final apiResponse = await http.get(uri, headers: headers);
-      final decodedApiResponse = jsonDecode(apiResponse.body) as Map<String, dynamic>;
-      final currentValue = decodedApiResponse[id]['usd'];
+      final currentTokenBalances = await balanceRepository.checkTokenPrices([id]);
 
       final newToken = tokenAssets.singleWhere((element) => element['id'] == id);
-      currentTokenList.add(TokenAsset.fromMap(newToken, currentValue));
+      currentTokenList.add(TokenAsset.fromMap(newToken, currentTokenBalances[id]!));
     } else {
       // If select == false, remove the selected token from list and shared preferences
       currentTokenList.removeWhere((element) => element.id == id);
     }
 
+    // Save newly selected token to shared preferences
+
     List<String> newSelectedTokenStringList = currentTokenList.map((e) => e.toJson()).toList();
-    prefs.setStringList('selectedTokens', newSelectedTokenStringList);
+    // ignore: avoid_single_cascade_in_expression_statements
+    await SharedPreferences.getInstance()
+      ..setStringList('selectedTokens', newSelectedTokenStringList);
 
     emit(
       BalanceState(
