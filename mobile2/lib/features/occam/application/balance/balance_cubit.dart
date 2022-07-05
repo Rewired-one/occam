@@ -23,24 +23,28 @@ class BalanceCubit extends Cubit<BalanceState> {
     // Get List of Wallets from User
     emit(const BalanceState(status: BalanceStatus.loading));
 
-    // fetch tokenAssets
-    final tokenAssets = await balanceRepository.fetchTokenAssets();
-
     // Get List of Wallets from User
     final wallets = await balanceRepository.fetchUserWallets();
 
     // Select the first Wallet
     final selectedWallet = wallets[0];
 
-    // Check the balance of the Wallet
+    // Check the SOL balance of the Wallet
     final balance = await balanceRepository.checkBalance(selectedWallet.pubKey, state.selectedNetwork.url);
+
+    // fetch tokenAssets
+    final tokenAssets = await balanceRepository.fetchTokenAssets();
+
+    final solCurrentValue = tokenAssets.singleWhere((element) => element.id == 'solana').currentValue;
+
+    final solanaBalanceInUSD = balance * solCurrentValue;
 
     emit(
       BalanceState(
         status: BalanceStatus.success,
         selectedWallet: selectedWallet,
         walletList: wallets,
-        balance: balance,
+        balance: solanaBalanceInUSD,
         selectedTokens: tokenAssets,
       ),
     );
@@ -55,15 +59,20 @@ class BalanceCubit extends Cubit<BalanceState> {
         selectedTokens: state.selectedTokens,
       ),
     );
+    // fetch tokenAssets
     final balance = await balanceRepository.checkBalance(state.selectedWallet!.pubKey, network.url);
+    final tokenAssets = await balanceRepository.fetchTokenAssets();
+    final solCurrentValue = tokenAssets.singleWhere((element) => element.id == 'solana').currentValue;
+    final solanaBalanceInUSD = balance * solCurrentValue;
+
     emit(
       BalanceState(
         status: BalanceStatus.success,
         walletList: state.walletList,
         selectedWallet: state.selectedWallet,
-        balance: balance,
+        balance: solanaBalanceInUSD,
         selectedNetwork: network,
-        selectedTokens: state.selectedTokens,
+        selectedTokens: tokenAssets,
       ),
     );
   }
@@ -78,15 +87,19 @@ class BalanceCubit extends Cubit<BalanceState> {
       ),
     );
     final newSelectedWallet = state.walletList.singleWhere((wallet) => wallet.walletName == walletName);
+    // fetch tokenAssets
     final balance = await balanceRepository.checkBalance(newSelectedWallet.pubKey, state.selectedNetwork.url);
+    final tokenAssets = await balanceRepository.fetchTokenAssets();
+    final solCurrentValue = tokenAssets.singleWhere((element) => element.id == 'solana').currentValue;
+    final solanaBalanceInUSD = balance * solCurrentValue;
     emit(
       BalanceState(
         status: BalanceStatus.success,
         walletList: state.walletList,
         selectedNetwork: state.selectedNetwork,
         selectedWallet: newSelectedWallet,
-        balance: balance,
-        selectedTokens: state.selectedTokens,
+        balance: solanaBalanceInUSD,
+        selectedTokens: tokenAssets,
       ),
     );
   }

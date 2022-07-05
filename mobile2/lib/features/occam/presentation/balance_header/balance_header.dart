@@ -8,7 +8,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:mobile2/constants/colors.dart';
 import 'package:mobile2/widgets/text_widget.dart';
 import 'package:mobile2/features/occam/application/balance/balance_cubit.dart';
-import 'package:mobile2/features/occam/presentation/header_loading.dart';
+import 'package:mobile2/features/occam/presentation/balance_header/header_loading.dart';
 
 class BalanceHeader extends StatefulWidget {
   const BalanceHeader({Key? key}) : super(key: key);
@@ -83,8 +83,8 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                     )
                   ],
                 ),
-                const TextWidget(
-                  '\$0.00',
+                TextWidget(
+                  '\$${state.balance.toStringAsFixed(2)}',
                   fontSize: 58,
                 ),
                 Row(
