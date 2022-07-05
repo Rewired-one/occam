@@ -169,9 +169,6 @@ app.post('/checkBalance', (req, res) => {
         }
 
         const balance = stdout.split(' ')[0];
-        console.log('BALANCE: ', balance);
-
-        // Get BALANCE VALUE IN US DOLLARS
 
         return res.send({
             success: true,
