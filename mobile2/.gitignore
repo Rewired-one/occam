@@ -32,6 +32,8 @@ migrate_working_dir/
 .pub/
 /build/
 
+/ios/firebase_app_id_file.json
+
 # Web related
 lib/generated_plugin_registrant.dart
 
