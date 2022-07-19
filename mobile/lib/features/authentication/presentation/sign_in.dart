@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile/features/authentication/presentation/sign_up.dart';
-
-import 'package:mobile/widgets/input.dart';
-import 'package:mobile/widgets/password_input.dart';
-import 'package:mobile/features/navigation/presentation/navigation.dart';
-import 'package:mobile/features/authentication/application/auth/auth_cubit.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile2/constants/colors.dart';
+import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
+import 'package:mobile2/widgets/input.dart';
+import 'package:mobile2/widgets/loading_overlay.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -15,105 +14,141 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  String email = '';
-  String password = '';
+  final TextEditingController _controller = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  bool canLogin = false;
 
-  void signIn() async {
-    await context.read<AuthCubit>().signIn(email, password);
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthCubit, AuthState>(
-        listener: (context, AuthState state) {
-          if (state.status == AuthStatus.failure) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  'Error! ${state.authFailure?.message}',
+    final cubitLoading = context.watch<AuthenticationCubit>().state.cubitLoading;
+
+    return BlocListener<AuthenticationCubit, AuthState>(
+      listener: (context, state) {
+        if (state.errorMessage != null) {
+          setState(() {
+            canLogin = false;
+          });
+          _formKey.currentState!.validate();
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                state.errorMessage!,
+                style: GoogleFonts.dmSans(
+                  color: AppTheme.red,
                 ),
-                duration: const Duration(seconds: 2),
               ),
-            );
-          }
-          if (state.status == AuthStatus.success) {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const NavigationScreen(),
-              ),
-            );
-          }
-        },
-        builder: (context, AuthState state) {
-          if (state.status == AuthStatus.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          if (state.status == AuthStatus.success) {
-            return const SizedBox(
-              width: double.infinity,
-              height: double.infinity,
-            );
-          }
-          return Container(
-            padding: const EdgeInsets.all(20),
-            width: double.infinity,
-            height: double.infinity,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 200),
-                const Text(
-                  'Occam Sign In',
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                Input(
-                  labelText: 'Email',
-                  onChange: (val) => email = val!,
-                ),
-                const SizedBox(height: 10),
-                PasswordInput(
-                  labelText: 'Password',
-                  onChange: (val) => password = val!,
-                ),
-                if (state.status == AuthStatus.failure) Text(state.authFailure!.message),
-                const SizedBox(height: 20),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: OutlinedButton(
-                    style: OutlinedButton.styleFrom(
-                      primary: Colors.black,
-                      backgroundColor: const Color.fromARGB(255, 77, 195, 206),
-                      side: const BorderSide(
-                        width: 1,
-                        color: Colors.blueAccent,
-                      ),
-                    ),
-                    onPressed: () => signIn(),
-                    child: const Text('Enter'),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: TextButton(
-                    onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const SignUpScreen())),
-                    child: const Text('Register New Wallet'),
-                  ),
-                ),
-              ],
+              backgroundColor: Colors.black45,
+              duration: const Duration(seconds: 2),
             ),
           );
-        },
+        }
+      },
+      child: Scaffold(
+        body: LayoutBuilder(
+          builder: (context, constraints) {
+            return Stack(
+              children: [
+                Form(
+                  key: _formKey,
+                  child: Container(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth,
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color(0xFF212121),
+                          Color(0xFF171717),
+                          Color(0xFF212121),
+                        ],
+                        stops: [
+                          0,
+                          56.25,
+                          100,
+                        ],
+                      ),
+                    ),
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: constraints.maxHeight * .2,
+                        ),
+                        Text(
+                          'occam',
+                          style: GoogleFonts.dmSans(fontSize: 49),
+                        ),
+                        Text(
+                          'Crypto wallet for solana ecosystem',
+                          style: GoogleFonts.dmSans(fontSize: 15, color: const Color(0xFF7C7C7C)),
+                        ),
+                        SizedBox(height: constraints.maxHeight * .175),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 28),
+                          child: InputWidget(
+                            controller: _controller,
+                            labelText: 'Password',
+                            obscureText: true,
+                            onChanged: (String? value) {
+                              // TODO: Optimize for less setState
+                              if (value != null && value.isNotEmpty) {
+                                setState(() {
+                                  canLogin = true;
+                                });
+                              } else {
+                                setState(() {
+                                  canLogin = false;
+                                });
+                              }
+                            },
+                            validator: (String? value) {
+                              if (!canLogin) {
+                                return 'Invalid Password!';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        SizedBox(height: constraints.maxHeight * .1),
+                        SizedBox(
+                          width: 250,
+                          child: MaterialButton(
+                            onPressed:
+                                !canLogin ? null : () => context.read<AuthenticationCubit>().signIn(_controller.text),
+                            disabledColor: const Color.fromRGBO(99, 99, 99, 0.1),
+                            disabledTextColor: AppTheme.inactive,
+                            color: const Color.fromRGBO(99, 99, 99, 0.1),
+                            textColor: const Color(0xFFCB4EE8),
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+                            padding: const EdgeInsets.symmetric(vertical: 13),
+                            child: Text(
+                              'Continue',
+                              style: GoogleFonts.dmSans(
+                                fontSize: 19,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SafeArea(
+                          child: SizedBox.shrink(),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+                if (cubitLoading ?? false) const LoadingOverlayWidget()
+              ],
+            );
+          },
+        ),
       ),
     );
   }

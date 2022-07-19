@@ -1,52 +1,58 @@
-// ignore_for_file: use_key_in_widget_constructors
-
 import 'package:flutter/material.dart';
+import 'package:mobile2/constants/colors.dart';
 
-class Input extends StatelessWidget {
-  const Input({required this.labelText, this.hintText, this.onChange, this.validator, this.controller});
-  final String labelText;
-  final String? hintText;
-  final Function(String?)? onChange;
-  final String? Function(String?)? validator;
+/// Standard TextFormField Widget
+class InputWidget extends StatefulWidget {
+  const InputWidget({
+    this.controller,
+    this.labelText,
+    this.onChanged,
+    this.validator,
+    this.obscureText = false,
+    Key? key,
+  }) : super(key: key);
+  final String? labelText;
   final TextEditingController? controller;
+  final Function(String? value)? onChanged;
+  final String? Function(String? value)? validator;
+  final bool obscureText;
+
+  @override
+  State<InputWidget> createState() => _InputWidgetState();
+}
+
+class _InputWidgetState extends State<InputWidget> {
+  bool _obscureState = false;
+
+  @override
+  void initState() {
+    _obscureState = widget.obscureText ? widget.obscureText : false;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      controller: controller,
-      style: const TextStyle(
-        color: Colors.greenAccent,
-      ),
+      controller: widget.controller,
+      obscureText: _obscureState,
       decoration: InputDecoration(
-        hintText: hintText,
-        hintStyle: const TextStyle(
-          color: Color(0xff7B8789),
-          fontFamily: 'Brown',
-          fontStyle: FontStyle.normal,
+        suffixIcon: IconButton(
+          onPressed: () {
+            setState(() {
+              _obscureState = !_obscureState;
+            });
+          },
+          icon: Icon(_obscureState ? Icons.visibility : Icons.visibility_off),
         ),
-        labelText: labelText,
+        labelText: widget.labelText,
         labelStyle: const TextStyle(
-          color: Colors.pinkAccent,
-          fontFamily: 'Brown',
+          fontSize: 13,
+          color: AppTheme.inactive,
           fontStyle: FontStyle.normal,
         ),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Color(0xff4C5067),
-            width: 1.0,
-          ),
-        ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(
-            color: Colors.white,
-            width: 1.0,
-          ),
-        ),
-        fillColor: const Color(0xff1F2128),
-        filled: true,
       ),
-      onChanged: onChange,
-      validator: validator,
+      onChanged: widget.onChanged,
+      validator: widget.validator,
     );
   }
 }
