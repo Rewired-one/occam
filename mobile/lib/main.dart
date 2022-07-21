@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Occam Wallet v2',
+        title: 'Occam Wallet v2.0.0',
         theme: ThemeData.dark(),
         routes: {
           '/': (context) => const CheckAuthentication(),
