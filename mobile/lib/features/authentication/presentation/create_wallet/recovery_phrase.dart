@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile2/constants/colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile2/constants/colors.dart';
+
 import 'package:mobile2/features/authentication/application/create_wallet_cubit/create_wallet_cubit.dart';
 
 class RecoveryPhraseScreen extends StatelessWidget {
