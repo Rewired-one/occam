@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+
 import 'package:mobile2/features/authentication/domain/app_user.dart';
 import 'package:mobile2/features/authentication/infrastructure/authentication_repo.dart';
 
