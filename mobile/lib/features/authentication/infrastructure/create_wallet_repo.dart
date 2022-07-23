@@ -1,13 +1,14 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile2/features/authentication/domain/i_create_wallet_facade.dart';
-import 'package:mobile2/features/authentication/domain/app_user.dart';
-import 'package:mobile2/features/authentication/domain/wallet.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:mobile2/features/authentication/domain/wallet.dart';
+import 'package:mobile2/features/authentication/domain/app_user.dart';
+import 'package:mobile2/features/authentication/domain/i_create_wallet_facade.dart';
 
 class CreateWalletRepository implements ICreateWalletFacade {
   @override
