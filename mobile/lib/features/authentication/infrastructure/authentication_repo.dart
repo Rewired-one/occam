@@ -1,9 +1,10 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:mobile2/features/authentication/domain/app_user.dart';
 import 'package:mobile2/features/authentication/domain/i_auth_facade.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthenticationRepository implements IAuthFacade {
   @override
