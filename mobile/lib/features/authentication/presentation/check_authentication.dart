@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
+
 import 'package:mobile2/features/authentication/presentation/sign_in.dart';
 import 'package:mobile2/features/authentication/presentation/sign_up.dart';
-
 import 'package:mobile2/features/authentication/presentation/splash_screen.dart';
 import 'package:mobile2/features/main_navigation/presentation/main_navigation.dart';
+import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
 
 class CheckAuthentication extends StatefulWidget {
   const CheckAuthentication({Key? key}) : super(key: key);
