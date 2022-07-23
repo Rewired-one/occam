@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:mobile2/features/authentication/application/create_wallet_cubit/create_wallet_cubit.dart';
 import 'package:mobile2/features/authentication/presentation/create_wallet/recovery_phrase.dart';
 
