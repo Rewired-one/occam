@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile2/constants/colors.dart';
-import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
+
 import 'package:mobile2/widgets/input.dart';
+import 'package:mobile2/constants/colors.dart';
 import 'package:mobile2/widgets/loading_overlay.dart';
+import 'package:mobile2/features/authentication/application/auth_cubit/authentication_cubit.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
