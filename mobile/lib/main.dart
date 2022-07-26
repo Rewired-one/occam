@@ -44,7 +44,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Occam Wallet',
+        title: 'Occam Wallet Flutter',
         theme: ThemeData.dark(),
         routes: {
           '/': (context) => const CheckAuthentication(),
