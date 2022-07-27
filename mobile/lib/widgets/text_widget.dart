@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+
 import 'package:mobile2/constants/colors.dart';
 
 class TextWidget extends StatelessWidget {
