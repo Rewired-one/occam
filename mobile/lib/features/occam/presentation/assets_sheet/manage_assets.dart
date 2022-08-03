@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:mobile2/constants/colors.dart';
+import 'package:mobile2/widgets/text_widget.dart';
 import 'package:mobile2/constants/token_assets.dart';
 import 'package:mobile2/features/occam/application/balance/balance_cubit.dart';
-import 'package:mobile2/widgets/text_widget.dart';
 
 class ManageAssetsScreen extends StatelessWidget {
   const ManageAssetsScreen({Key? key}) : super(key: key);

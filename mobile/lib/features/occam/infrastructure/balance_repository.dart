@@ -1,11 +1,12 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:mobile2/features/occam/domain/app_wallet.dart';
-import 'package:mobile2/features/occam/domain/i_balance_facade.dart';
 import 'package:http/http.dart' as http;
-import 'package:mobile2/features/occam/domain/token_asset.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:mobile2/features/occam/domain/app_wallet.dart';
+import 'package:mobile2/features/occam/domain/token_asset.dart';
+import 'package:mobile2/features/occam/domain/i_balance_facade.dart';
 
 class BalanceRepository implements IBalanceFacade {
   // TODO: Add Error Check
