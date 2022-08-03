@@ -8,9 +8,9 @@ import 'package:iconify_flutter/icons/fa6_solid.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:colorful_iconify_flutter/icons/icon_park.dart' as park_icons;
 
-import 'package:mobile2/constants/colors.dart';
-import 'package:mobile2/features/occam/presentation/balance.dart';
-import 'package:mobile2/features/main_navigation/presentation/second_navigation.dart';
+import 'package:occam/constants/colors.dart';
+import 'package:occam/features/occam/presentation/balance.dart';
+import 'package:occam/features/main_navigation/presentation/second_navigation.dart';
 
 class MainNavigationScreen extends StatelessWidget {
   MainNavigationScreen({Key? key}) : super(key: key);

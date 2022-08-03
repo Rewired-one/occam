@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 // ignore: depend_on_referenced_packages
 import 'package:meta/meta.dart';
 
-import 'package:mobile2/features/authentication/domain/app_user.dart';
-import 'package:mobile2/features/authentication/infrastructure/create_wallet_repo.dart';
+import 'package:occam/features/authentication/domain/app_user.dart';
+import 'package:occam/features/authentication/infrastructure/create_wallet_repo.dart';
 
 part 'create_wallet_state.dart';
 

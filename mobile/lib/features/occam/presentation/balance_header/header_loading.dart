@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile2/widgets/loading_skeleton.dart';
+import 'package:occam/widgets/loading_skeleton.dart';
 
 class BalanceHeaderLoading extends StatelessWidget {
   const BalanceHeaderLoading({Key? key}) : super(key: key);

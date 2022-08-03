@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile2/constants/colors.dart';
+import 'package:occam/constants/colors.dart';
 
 class RoundButton extends StatelessWidget {
   const RoundButton({

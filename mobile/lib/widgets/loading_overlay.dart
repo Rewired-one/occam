@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mobile2/constants/colors.dart';
+import 'package:occam/constants/colors.dart';
 
 /// Loading Overlay Widget
 class LoadingOverlayWidget extends StatelessWidget {

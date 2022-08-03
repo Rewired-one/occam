@@ -6,9 +6,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:mobile2/features/authentication/domain/wallet.dart';
-import 'package:mobile2/features/authentication/domain/app_user.dart';
-import 'package:mobile2/features/authentication/domain/i_create_wallet_facade.dart';
+import 'package:occam/features/authentication/domain/wallet.dart';
+import 'package:occam/features/authentication/domain/app_user.dart';
+import 'package:occam/features/authentication/domain/i_create_wallet_facade.dart';
 
 class CreateWalletRepository implements ICreateWalletFacade {
   @override

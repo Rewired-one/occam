@@ -1,6 +1,6 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:mobile2/features/authentication/domain/app_user.dart';
+import 'package:occam/features/authentication/domain/app_user.dart';
 
 abstract class IAuthFacade {
   Future<String?> checkUserHasSignedUp();

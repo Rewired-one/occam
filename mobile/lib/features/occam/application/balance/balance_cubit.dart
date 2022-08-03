@@ -2,10 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:mobile2/constants/token_assets.dart';
-import 'package:mobile2/features/occam/domain/app_wallet.dart';
-import 'package:mobile2/features/occam/domain/token_asset.dart';
-import 'package:mobile2/features/occam/infrastructure/balance_repository.dart';
+import 'package:occam/constants/token_assets.dart';
+import 'package:occam/features/occam/domain/app_wallet.dart';
+import 'package:occam/features/occam/domain/token_asset.dart';
+import 'package:occam/features/occam/infrastructure/balance_repository.dart';
 
 part 'balance_state.dart';
 

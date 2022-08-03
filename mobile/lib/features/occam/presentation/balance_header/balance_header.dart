@@ -7,10 +7,10 @@ import 'package:iconify_flutter/icons/fa6_solid.dart';
 import 'package:iconify_flutter/iconify_flutter.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 
-import 'package:mobile2/constants/colors.dart';
-import 'package:mobile2/widgets/text_widget.dart';
-import 'package:mobile2/features/occam/application/balance/balance_cubit.dart';
-import 'package:mobile2/features/occam/presentation/balance_header/header_loading.dart';
+import 'package:occam/constants/colors.dart';
+import 'package:occam/widgets/text_widget.dart';
+import 'package:occam/features/occam/application/balance/balance_cubit.dart';
+import 'package:occam/features/occam/presentation/balance_header/header_loading.dart';
 
 class BalanceHeader extends StatefulWidget {
   const BalanceHeader({Key? key}) : super(key: key);
@@ -118,8 +118,8 @@ class _BalanceHeaderState extends State<BalanceHeader> {
                       style: GoogleFonts.dmSans(),
                       isExpanded: true,
                       offset: const Offset(-20, 0),
-                      onChanged: (String? value) {
-                        context.read<BalanceCubit>().changeWallet(value!);
+                      onChanged: (val) {
+                        // context.read<BalanceCubit>().changeWallet(value as String);
                       },
                       items: [
                         ...state.walletList.map(
